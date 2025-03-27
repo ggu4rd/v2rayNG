@@ -1,0 +1,6 @@
+{
+  "[kotlin]": {
+    "editor.formatOnSave": true,
+    "editor.defaultFormatter": "fwcd.kotlin"
+  }
+}
