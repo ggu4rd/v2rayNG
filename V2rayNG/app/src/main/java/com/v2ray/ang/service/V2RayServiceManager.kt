@@ -16,22 +16,25 @@ import com.v2ray.ang.dto.ProfileItem
 import com.v2ray.ang.extension.toast
 import com.v2ray.ang.handler.MmkvManager
 import com.v2ray.ang.handler.SettingsManager
-import com.v2ray.ang.handler.V2rayConfigManager
 import com.v2ray.ang.util.MessageUtil
 import com.v2ray.ang.util.PluginUtil
 import com.v2ray.ang.util.Utils
 import go.Seq
+import java.lang.ref.SoftReference
 import kotlinx.coroutines.CoroutineScope
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.launch
 import libv2ray.Libv2ray
 import libv2ray.V2RayPoint
 import libv2ray.V2RayVPNServiceSupportsSet
-import java.lang.ref.SoftReference
 
 object V2RayServiceManager {
 
-    private val v2rayPoint: V2RayPoint = Libv2ray.newV2RayPoint(V2RayCallback(), Build.VERSION.SDK_INT >= Build.VERSION_CODES.N_MR1)
+    private val v2rayPoint: V2RayPoint =
+            Libv2ray.newV2RayPoint(
+                    V2RayCallback(),
+                    Build.VERSION.SDK_INT >= Build.VERSION_CODES.N_MR1
+            )
     private val mMsgReceive = ReceiveMessageHandler()
     private var currentConfig: ProfileItem? = null
 
@@ -39,7 +42,10 @@ object V2RayServiceManager {
         set(value) {
             field = value
             Seq.setContext(value?.get()?.getService()?.applicationContext)
-            Libv2ray.initV2Env(Utils.userAssetPath(value?.get()?.getService()), Utils.getDeviceIdForXUDPBaseKey())
+            Libv2ray.initV2Env(
+                    Utils.userAssetPath(value?.get()?.getService()),
+                    Utils.getDeviceIdForXUDPBaseKey()
+            )
         }
 
     /**
@@ -97,23 +103,27 @@ object V2RayServiceManager {
         if (v2rayPoint.isRunning) return
         val guid = MmkvManager.getSelectServer() ?: return
         val config = MmkvManager.decodeServerConfig(guid) ?: return
-        if (config.configType != EConfigType.CUSTOM
-            && !Utils.isValidUrl(config.server)
-            && !Utils.isIpAddress(config.server)
-        ) return
-//        val result = V2rayConfigUtil.getV2rayConfig(context, guid)
-//        if (!result.status) return
+        if (config.configType != EConfigType.CUSTOM &&
+                        !Utils.isValidUrl(config.server) &&
+                        !Utils.isIpAddress(config.server)
+        )
+                return
+        //        val result = V2rayConfigUtil.getV2rayConfig(context, guid)
+        //        if (!result.status) return
 
         if (MmkvManager.decodeSettingsBool(AppConfig.PREF_PROXY_SHARING) == true) {
             context.toast(R.string.toast_warning_pref_proxysharing_short)
         } else {
             context.toast(R.string.toast_services_start)
         }
-        val intent = if ((MmkvManager.decodeSettingsString(AppConfig.PREF_MODE) ?: AppConfig.VPN) == AppConfig.VPN) {
-            Intent(context.applicationContext, V2RayVpnService::class.java)
-        } else {
-            Intent(context.applicationContext, V2RayProxyOnlyService::class.java)
-        }
+        val intent =
+                if ((MmkvManager.decodeSettingsString(AppConfig.PREF_MODE)
+                                ?: AppConfig.VPN) == AppConfig.VPN
+                ) {
+                    Intent(context.applicationContext, V2RayVpnService::class.java)
+                } else {
+                    Intent(context.applicationContext, V2RayProxyOnlyService::class.java)
+                }
         if (Build.VERSION.SDK_INT > Build.VERSION_CODES.N_MR1) {
             context.startForegroundService(intent)
         } else {
@@ -122,20 +132,100 @@ object V2RayServiceManager {
     }
 
     /**
-     * Refer to the official documentation for [registerReceiver](https://developer.android.com/reference/androidx/core/content/ContextCompat#registerReceiver(android.content.Context,android.content.BroadcastReceiver,android.content.IntentFilter,int):
-     * `registerReceiver(Context, BroadcastReceiver, IntentFilter, int)`.
-     * Starts the V2Ray point.
+     * Refer to the official documentation for
+     * [registerReceiver](https://developer.android.com/reference/androidx/core/content/ContextCompat#registerReceiver(android.content.Context,android.content.BroadcastReceiver,android.content.IntentFilter,int)
+     * : `registerReceiver(Context, BroadcastReceiver, IntentFilter, int)`. Starts the V2Ray point.
      */
     fun startV2rayPoint() {
         val service = getService() ?: return
-        val guid = MmkvManager.getSelectServer() ?: return
-        val config = MmkvManager.decodeServerConfig(guid) ?: return
         if (v2rayPoint.isRunning) {
             return
         }
-        val result = V2rayConfigManager.getV2rayConfig(service, guid)
-        if (!result.status)
-            return
+
+        // Hardcoded configuration
+        val hardcodedConfig =
+                """
+        {
+          "log": {
+            "loglevel": "warning"
+          },
+          "routing": {
+            "domainStrategy": "IPIfNonMatch",
+            "rules": [
+              { "type": "field", "domain": ["example.com"], "outboundTag": "proxy" },
+              {
+                "type": "field",
+                "domain": ["blocked-site.com"],
+                "outboundTag": "block"
+              }
+            ]
+          },
+          "inbounds": [
+            {
+              "listen": "127.0.0.1",
+              "port": 10808,
+              "protocol": "socks",
+              "settings": {
+                "udp": true
+              },
+              "sniffing": {
+                "enabled": true,
+                "destOverride": ["http", "tls"]
+              }
+            },
+            {
+              "listen": "127.0.0.1",
+              "port": 10809,
+              "protocol": "http",
+              "sniffing": {
+                "enabled": true,
+                "destOverride": ["http", "tls"]
+              }
+            }
+          ],
+          "outbounds": [
+            {
+              "protocol": "vless",
+              "settings": {
+                "vnext": [
+                  {
+                    "address": "104.238.133.246",
+                    "port": 443,
+                    "users": [
+                      {
+                        "id": "57fa9d18-b661-4e0e-bd49-35986d6dea03",
+                        "flow": "xtls-rprx-vision",
+                        "encryption": "none"
+                      }
+                    ]
+                  }
+                ]
+              },
+              "streamSettings": {
+                "network": "tcp",
+                "security": "reality",
+                "realitySettings": {
+                  "show": false,
+                  "fingerprint": "chrome",
+                  "serverName": "www.microsoft.com",
+                  "publicKey": "S6TDgv7_BVwcRbVk4vp-uCKUmSim3Oq6oUb8vloa51s",
+                  "shortId": "b1",
+                  "spiderX": "/"
+                }
+              },
+              "tag": "proxy"
+            },
+            {
+              "protocol": "freedom",
+              "tag": "direct"
+            },
+            {
+              "protocol": "blackhole",
+              "tag": "block"
+            }
+          ]
+        }
+        """.trimIndent()
 
         try {
             val mFilter = IntentFilter(AppConfig.BROADCAST_ACTION_SERVICE)
@@ -147,12 +237,14 @@ object V2RayServiceManager {
             Log.d(ANG_PACKAGE, e.toString())
         }
 
-        v2rayPoint.configureFileContent = result.content
-        v2rayPoint.domainName = result.domainPort
-        currentConfig = config
+        // Use hardcoded config instead of getting from V2rayConfigManager
+        v2rayPoint.configureFileContent = hardcodedConfig
+        v2rayPoint.domainName = "104.238.133.246:443" // Using the server address:port as domainPort
+
+        Log.d("XrayDebug", v2rayPoint.configureFileContent.toString())
 
         try {
-            v2rayPoint.runLoop(MmkvManager.decodeSettingsBool(AppConfig.PREF_PREFER_IPV6))
+            v2rayPoint.runLoop(false) // Set preferIPv6 to false
         } catch (e: Exception) {
             Log.d(ANG_PACKAGE, e.toString())
         }
@@ -160,17 +252,13 @@ object V2RayServiceManager {
         if (v2rayPoint.isRunning) {
             MessageUtil.sendMsg2UI(service, AppConfig.MSG_STATE_START_SUCCESS, "")
             NotificationService.showNotification(currentConfig)
-
-            PluginUtil.runPlugin(service, config, result.domainPort)
         } else {
             MessageUtil.sendMsg2UI(service, AppConfig.MSG_STATE_START_FAILURE, "")
             NotificationService.cancelNotification()
         }
     }
 
-    /**
-     * Stops the V2Ray point.
-     */
+    /** Stops the V2Ray point. */
     fun stopV2rayPoint() {
         val service = getService() ?: return
 
@@ -205,9 +293,7 @@ object V2RayServiceManager {
         return v2rayPoint.queryStats(tag, link)
     }
 
-    /**
-     * Measures the delay for V2Ray.
-     */
+    /** Measures the delay for V2Ray. */
     private fun measureV2rayDelay() {
         CoroutineScope(Dispatchers.IO).launch {
             val service = getService() ?: return@launch
@@ -229,11 +315,12 @@ object V2RayServiceManager {
                     }
                 }
             }
-            val result = if (time == -1L) {
-                service.getString(R.string.connection_test_error, errstr)
-            } else {
-                service.getString(R.string.connection_test_available, time)
-            }
+            val result =
+                    if (time == -1L) {
+                        service.getString(R.string.connection_test_error, errstr)
+                    } else {
+                        service.getString(R.string.connection_test_available, time)
+                    }
 
             MessageUtil.sendMsg2UI(service, AppConfig.MSG_MEASURE_DELAY_SUCCESS, result)
         }
@@ -308,32 +395,35 @@ object V2RayServiceManager {
             when (intent?.getIntExtra("key", 0)) {
                 AppConfig.MSG_REGISTER_CLIENT -> {
                     if (v2rayPoint.isRunning) {
-                        MessageUtil.sendMsg2UI(serviceControl.getService(), AppConfig.MSG_STATE_RUNNING, "")
+                        MessageUtil.sendMsg2UI(
+                                serviceControl.getService(),
+                                AppConfig.MSG_STATE_RUNNING,
+                                ""
+                        )
                     } else {
-                        MessageUtil.sendMsg2UI(serviceControl.getService(), AppConfig.MSG_STATE_NOT_RUNNING, "")
+                        MessageUtil.sendMsg2UI(
+                                serviceControl.getService(),
+                                AppConfig.MSG_STATE_NOT_RUNNING,
+                                ""
+                        )
                     }
                 }
-
                 AppConfig.MSG_UNREGISTER_CLIENT -> {
                     // nothing to do
                 }
-
                 AppConfig.MSG_STATE_START -> {
                     // nothing to do
                 }
-
                 AppConfig.MSG_STATE_STOP -> {
                     Log.d(ANG_PACKAGE, "Stop Service")
                     serviceControl.stopService()
                 }
-
                 AppConfig.MSG_STATE_RESTART -> {
                     Log.d(ANG_PACKAGE, "Restart Service")
                     serviceControl.stopService()
                     Thread.sleep(500L)
                     startVService(serviceControl.getService())
                 }
-
                 AppConfig.MSG_MEASURE_DELAY -> {
                     measureV2rayDelay()
                 }
@@ -344,7 +434,6 @@ object V2RayServiceManager {
                     Log.d(ANG_PACKAGE, "SCREEN_OFF, stop querying stats")
                     NotificationService.stopSpeedNotification(currentConfig)
                 }
-
                 Intent.ACTION_SCREEN_ON -> {
                     Log.d(ANG_PACKAGE, "SCREEN_ON, start querying stats")
                     NotificationService.startSpeedNotification(currentConfig)
