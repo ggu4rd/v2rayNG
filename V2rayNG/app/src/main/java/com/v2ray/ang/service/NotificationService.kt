@@ -18,7 +18,7 @@ import com.v2ray.ang.R
 import com.v2ray.ang.dto.ProfileItem
 import com.v2ray.ang.extension.toSpeedString
 import com.v2ray.ang.handler.MmkvManager
-import com.v2ray.ang.ui.MainActivity
+import com.v2ray.ang.ui.SimpleVpnActivity
 import kotlinx.coroutines.CoroutineScope
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.Job
@@ -98,7 +98,7 @@ object NotificationService {
             PendingIntent.FLAG_UPDATE_CURRENT
         }
 
-        val startMainIntent = Intent(service, MainActivity::class.java)
+        val startMainIntent = Intent(service, SimpleVpnActivity::class.java)
         val contentPendingIntent = PendingIntent.getActivity(service, NOTIFICATION_PENDING_INTENT_CONTENT, startMainIntent, flags)
 
         val stopV2RayIntent = Intent(AppConfig.BROADCAST_ACTION_SERVICE)
