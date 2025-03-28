@@ -122,19 +122,6 @@
             android:process=":RunSoLibV2RayDaemon" />
 
         <receiver
-            android:name=".receiver.WidgetProvider"
-            android:exported="true"
-            android:process=":RunSoLibV2RayDaemon">
-            <meta-data
-                android:name="android.appwidget.provider"
-                android:resource="@xml/app_widget_provider" />
-            <intent-filter>
-                <action android:name="android.appwidget.action.APPWIDGET_UPDATE" />
-                <action android:name="com.v2ray.ang.action.widget.click" />
-                <action android:name="com.v2ray.ang.action.activity" />
-            </intent-filter>
-        </receiver>
-        <receiver
             android:name=".receiver.BootReceiver"
             android:exported="true"
             android:label="BootReceiver">
