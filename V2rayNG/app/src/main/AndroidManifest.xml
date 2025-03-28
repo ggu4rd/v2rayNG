@@ -85,10 +85,10 @@
                 <category android:name="android.intent.category.LAUNCHER" />
             </intent-filter>
         </activity>
-        <activity
+        <!-- <activity
             android:name=".ui.ServerActivity"
             android:exported="false"
-            android:windowSoftInputMode="stateUnchanged" />
+            android:windowSoftInputMode="stateUnchanged" /> -->
         <activity
             android:name=".ui.ServerCustomConfigActivity"
             android:exported="false"
