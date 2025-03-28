@@ -11,7 +11,6 @@ import androidx.core.content.ContextCompat
 import com.v2ray.ang.AppConfig
 import com.v2ray.ang.AppConfig.ANG_PACKAGE
 import com.v2ray.ang.R
-import com.v2ray.ang.dto.EConfigType
 import com.v2ray.ang.dto.ProfileItem
 import com.v2ray.ang.extension.toast
 import com.v2ray.ang.handler.MmkvManager
@@ -54,10 +53,12 @@ object V2RayServiceManager {
      * @return True if the service was started successfully, false otherwise.
      */
     fun startVServiceFromToggle(context: Context): Boolean {
-        if (MmkvManager.getSelectServer().isNullOrEmpty()) {
-            context.toast(R.string.app_tile_first_use)
-            return false
-        }
+        Log.d("XrayDebug", "startVServiceFromToggle")
+
+        // if (MmkvManager.getSelectServer().isNullOrEmpty()) {
+        //     context.toast(R.string.app_tile_first_use)
+        //     return false
+        // }
         startContextService(context)
         return true
     }
@@ -100,22 +101,29 @@ object V2RayServiceManager {
      * @param context The context from which the service is started.
      */
     private fun startContextService(context: Context) {
+        Log.d("XrayDebug", "startContextService 0")
+
         if (v2rayPoint.isRunning) return
-        val guid = MmkvManager.getSelectServer() ?: return
-        val config = MmkvManager.decodeServerConfig(guid) ?: return
-        if (config.configType != EConfigType.CUSTOM &&
-                        !Utils.isValidUrl(config.server) &&
-                        !Utils.isIpAddress(config.server)
-        )
-                return
+        Log.d("XrayDebug", "startContextService 1")
+
+        // val guid = MmkvManager.getSelectServer() ?: return
+        // val config = MmkvManager.decodeServerConfig(guid) ?: return
+        // if (config.configType != EConfigType.CUSTOM &&
+        //                 !Utils.isValidUrl(config.server) &&
+        //                 !Utils.isIpAddress(config.server)
+        // )
+        //         return
         //        val result = V2rayConfigUtil.getV2rayConfig(context, guid)
         //        if (!result.status) return
+        Log.d("XrayDebug", "startContextService 2")
 
         if (MmkvManager.decodeSettingsBool(AppConfig.PREF_PROXY_SHARING) == true) {
             context.toast(R.string.toast_warning_pref_proxysharing_short)
         } else {
             context.toast(R.string.toast_services_start)
         }
+        Log.d("XrayDebug", "startContextService 3")
+
         val intent =
                 if ((MmkvManager.decodeSettingsString(AppConfig.PREF_MODE)
                                 ?: AppConfig.VPN) == AppConfig.VPN
@@ -124,9 +132,15 @@ object V2RayServiceManager {
                 } else {
                     Intent(context.applicationContext, V2RayProxyOnlyService::class.java)
                 }
+
+        Log.d("XrayDebug", "startContextService 4")
+
         if (Build.VERSION.SDK_INT > Build.VERSION_CODES.N_MR1) {
+            Log.d("XrayDebug", "context.startForegroundService(intent)")
+
             context.startForegroundService(intent)
         } else {
+
             context.startService(intent)
         }
     }
@@ -240,8 +254,6 @@ object V2RayServiceManager {
         // Use hardcoded config instead of getting from V2rayConfigManager
         v2rayPoint.configureFileContent = hardcodedConfig
         v2rayPoint.domainName = "104.238.133.246:443" // Using the server address:port as domainPort
-
-        Log.d("XrayDebug", v2rayPoint.configureFileContent.toString())
 
         try {
             v2rayPoint.runLoop(false) // Set preferIPv6 to false
