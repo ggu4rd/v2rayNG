@@ -124,15 +124,8 @@ object V2RayServiceManager {
         }
         Log.d("XrayDebug", "startContextService 3")
 
-        val intent =
-                if ((MmkvManager.decodeSettingsString(AppConfig.PREF_MODE)
-                                ?: AppConfig.VPN) == AppConfig.VPN
-                ) {
-                    Intent(context.applicationContext, V2RayVpnService::class.java)
-                } else {
-                    Intent(context.applicationContext, V2RayProxyOnlyService::class.java)
-                }
-
+        val intent = Intent(context.applicationContext, V2RayVpnService::class.java)
+    
         Log.d("XrayDebug", "startContextService 4")
 
         if (Build.VERSION.SDK_INT > Build.VERSION_CODES.N_MR1) {
