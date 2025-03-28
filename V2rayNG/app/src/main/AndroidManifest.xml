@@ -89,10 +89,10 @@
             android:name=".ui.ServerActivity"
             android:exported="false"
             android:windowSoftInputMode="stateUnchanged" /> -->
-        <activity
+        <!-- <activity
             android:name=".ui.ServerCustomConfigActivity"
             android:exported="false"
-            android:windowSoftInputMode="stateUnchanged" />
+            android:windowSoftInputMode="stateUnchanged" /> -->
         <activity
             android:name=".ui.SettingsActivity"
             android:exported="false" />
