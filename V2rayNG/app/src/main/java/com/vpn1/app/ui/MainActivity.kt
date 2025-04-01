@@ -66,7 +66,7 @@ class MainActivity : AppCompatActivity() {
 
     private fun updateConnectionUI() {
         connectionStatus.text = getString(
-            if (isVpnRunning) R.string.connect else R.string.disconnect
+            if (isVpnRunning) R.string.connected else R.string.disconnected
         )
     }
 }

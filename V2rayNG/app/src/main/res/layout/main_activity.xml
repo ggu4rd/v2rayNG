@@ -8,8 +8,8 @@
 
     <androidx.appcompat.widget.SwitchCompat
         android:id="@+id/btnToggle"
-        android:layout_width="105dp"
-        android:layout_height="68dp"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
         android:thumb="@drawable/toggle_thumb"
         app:track="@drawable/toggle_track"
         app:showText="false" />
@@ -18,8 +18,9 @@
         android:id="@+id/connectionStatus"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:layout_marginTop="8dp"
-        android:textSize="16sp"
-        android:text="@string/disconnect" />
+        android:layout_marginTop="12dp"
+        android:textSize="18sp"
+        android:textColor="#333333"
+        android:text="@string/disconnected" />
 
 </LinearLayout>
