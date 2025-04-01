@@ -6,16 +6,9 @@
     android:gravity="center">
 
     <Button
-        android:id="@+id/btnStart"
+        android:id="@+id/btnToggle"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:text="Start V2Ray"
-        android:layout_marginBottom="16dp"/>
-
-    <Button
-        android:id="@+id/btnStop"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:text="Stop V2Ray"/>
+        android:text="@string/connect_vpn"/>
 
 </LinearLayout>

@@ -11,7 +11,7 @@
         android:xlargeScreens="true" />
 
     <uses-sdk
-        android:minSdkVersion="21"
+        android:minSdkVersion="24"
         tools:overrideLibrary="com.blacksquircle.ui.editorkit" />
 
     <uses-feature
@@ -44,7 +44,7 @@
     <uses-permission android:name="android.permission.RECEIVE_BOOT_COMPLETED" />
 
     <application
-        android:name=".MainApplication"
+        android:name="com.vpn1.app.MainApplication"
         android:allowBackup="true"
         android:banner="@mipmap/ic_banner"
         android:icon="@mipmap/ic_launcher"
@@ -52,8 +52,7 @@
         android:supportsRtl="true"
         android:theme="@style/AppThemeDayNight"
         android:usesCleartextTraffic="true"
-        android:networkSecurityConfig="@xml/network_security_config"
-        tools:targetApi="m">
+        android:networkSecurityConfig="@xml/network_security_config">
 
         <!-- <activity
             android:name=".ui.MainActivity"
@@ -75,7 +74,7 @@
                 android:resource="@xml/shortcuts" />
         </activity> -->
         <activity
-            android:name=".ui.MainActivity"
+            android:name="com.vpn1.app.ui.MainActivity"
             android:exported="true">
             <intent-filter>
                 <action android:name="android.intent.action.MAIN" />
@@ -84,7 +83,7 @@
         </activity>
 
         <service
-            android:name=".service.V2RayVpnService"
+            android:name="com.vpn1.app.service.V2RayVpnService"
             android:enabled="true"
             android:exported="false"
             android:foregroundServiceType="specialUse"
@@ -103,12 +102,12 @@
         </service>
 
         <service
-            android:name=".service.V2RayTestService"
+            android:name="com.vpn1.app.service.V2RayTestService"
             android:exported="false"
             android:process=":RunSoLibV2RayDaemon" />
 
         <receiver
-            android:name=".receiver.BootReceiver"
+            android:name="com.vpn1.app.receiver.BootReceiver"
             android:exported="true"
             android:label="BootReceiver">
             <intent-filter>
