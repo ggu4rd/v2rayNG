@@ -8,7 +8,7 @@ import androidx.appcompat.app.AppCompatActivity
 import com.v2ray.ang.R
 import com.v2ray.ang.service.V2RayServiceManager
 
-class SimpleVpnActivity : AppCompatActivity() {
+class MainActivity : AppCompatActivity() {
 
     private val requestVpnPermission =
             registerForActivityResult(ActivityResultContracts.StartActivityForResult()) { result ->
@@ -20,7 +20,7 @@ class SimpleVpnActivity : AppCompatActivity() {
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
-        setContentView(R.layout.activity_simple_vpn)
+        setContentView(R.layout.main_activity)
 
         findViewById<Button>(R.id.btnStart).setOnClickListener {
             // Check if VPN permission is needed

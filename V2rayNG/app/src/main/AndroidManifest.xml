@@ -75,7 +75,7 @@
                 android:resource="@xml/shortcuts" />
         </activity> -->
         <activity
-            android:name=".ui.SimpleVpnActivity"
+            android:name=".ui.MainActivity"
             android:exported="true">
             <intent-filter>
                 <action android:name="android.intent.action.MAIN" />
