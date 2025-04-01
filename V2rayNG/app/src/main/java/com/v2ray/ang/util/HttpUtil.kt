@@ -1,9 +1,9 @@
-package com.v2ray.ang.util
+package com.vpn1.app.util
 
-import com.v2ray.ang.AppConfig.LOOPBACK
-import com.v2ray.ang.BuildConfig
-import com.v2ray.ang.util.Utils.encode
-import com.v2ray.ang.util.Utils.urlDecode
+import com.vpn1.app.AppConfig.LOOPBACK
+import com.vpn1.app.BuildConfig
+import com.vpn1.app.util.Utils.encode
+import com.vpn1.app.util.Utils.urlDecode
 import java.io.IOException
 import java.net.*
 import java.util.*

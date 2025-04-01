@@ -1,4 +1,4 @@
-package com.v2ray.ang
+package com.vpn1.app
 
 
 object AppConfig {
@@ -65,9 +65,9 @@ object AppConfig {
     const val PROTOCOL_FREEDOM: String = "freedom"
 
     /** Broadcast actions. */
-    const val BROADCAST_ACTION_SERVICE = "com.v2ray.ang.action.service"
-    const val BROADCAST_ACTION_ACTIVITY = "com.v2ray.ang.action.activity"
-    const val BROADCAST_ACTION_WIDGET_CLICK = "com.v2ray.ang.action.widget.click"
+    const val BROADCAST_ACTION_SERVICE = "com.vpn1.app.action.service"
+    const val BROADCAST_ACTION_ACTIVITY = "com.vpn1.app.action.activity"
+    const val BROADCAST_ACTION_WIDGET_CLICK = "com.vpn1.app.action.widget.click"
 
     /** Tasker extras. */
     const val TASKER_EXTRA_BUNDLE = "com.twofortyfouram.locale.intent.extra.BUNDLE"

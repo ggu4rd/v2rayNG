@@ -19,11 +19,11 @@
  *                                                                            *
  ******************************************************************************/
 
-package com.v2ray.ang.plugin
+package com.vpn1.app.plugin
 
 import android.content.Intent
 import android.content.pm.PackageManager
-import com.v2ray.ang.MainApplication
+import com.vpn1.app.MainApplication
 
 class PluginList : ArrayList<Plugin>() {
     init {

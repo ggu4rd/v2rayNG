@@ -19,15 +19,15 @@
  *                                                                            *
  ******************************************************************************/
 
-package com.v2ray.ang.plugin
+package com.vpn1.app.plugin
 
 import android.content.pm.ComponentInfo
 import android.content.pm.PackageManager
 import android.content.pm.ResolveInfo
 import android.graphics.drawable.Drawable
 import android.os.Build
-import com.v2ray.ang.MainApplication
-import com.v2ray.ang.plugin.PluginManager.loadString
+import com.vpn1.app.MainApplication
+import com.vpn1.app.plugin.PluginManager.loadString
 
 abstract class ResolvedPlugin(protected val resolveInfo: ResolveInfo) : Plugin() {
     protected abstract val componentInfo: ComponentInfo

@@ -46,7 +46,7 @@ Keep the Android services that control the Xray lifecycle:
 
 ### All UI Activities and Fragments
 
-- Delete `com.v2ray.ang.ui`.
+- Delete `com.vpn1.app.ui`.
 - Remove: `MainActivity`, `SettingsActivity`, `ServerActivity`, `LogcatActivity`, etc.
 
 ### Profile Management System
@@ -71,7 +71,7 @@ Keep the Android services that control the Xray lifecycle:
 
 ### Plugin System
 
-- Remove `com.v2ray.ang.plugin` if your config doesn't use external plugins.
+- Remove `com.vpn1.app.plugin` if your config doesn't use external plugins.
 
 ### Utilities Not Needed
 

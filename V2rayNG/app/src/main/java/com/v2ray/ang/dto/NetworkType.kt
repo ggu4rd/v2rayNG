@@ -1,4 +1,4 @@
-package com.v2ray.ang.dto
+package com.vpn1.app.dto
 
 enum class NetworkType(val type: String) {
     TCP("tcp"),

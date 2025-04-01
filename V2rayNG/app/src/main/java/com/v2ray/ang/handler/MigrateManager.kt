@@ -1,16 +1,16 @@
-package com.v2ray.ang.handler
+package com.vpn1.app.handler
 
 import android.util.Log
 import com.tencent.mmkv.MMKV
-import com.v2ray.ang.AppConfig
-import com.v2ray.ang.AppConfig.ANG_PACKAGE
-import com.v2ray.ang.dto.EConfigType
-import com.v2ray.ang.dto.NetworkType
-import com.v2ray.ang.dto.ProfileItem
-import com.v2ray.ang.dto.ServerConfig
-import com.v2ray.ang.extension.removeWhiteSpace
-import com.v2ray.ang.handler.MmkvManager.decodeServerConfig
-import com.v2ray.ang.util.JsonUtil
+import com.vpn1.app.AppConfig
+import com.vpn1.app.AppConfig.ANG_PACKAGE
+import com.vpn1.app.dto.EConfigType
+import com.vpn1.app.dto.NetworkType
+import com.vpn1.app.dto.ProfileItem
+import com.vpn1.app.dto.ServerConfig
+import com.vpn1.app.extension.removeWhiteSpace
+import com.vpn1.app.handler.MmkvManager.decodeServerConfig
+import com.vpn1.app.util.JsonUtil
 
 object MigrateManager {
     private const val ID_SERVER_CONFIG = "SERVER_CONFIG"

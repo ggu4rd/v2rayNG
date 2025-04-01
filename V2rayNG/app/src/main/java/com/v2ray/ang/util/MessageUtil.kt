@@ -1,10 +1,10 @@
-package com.v2ray.ang.util
+package com.vpn1.app.util
 
 import android.content.ComponentName
 import android.content.Context
 import android.content.Intent
-import com.v2ray.ang.AppConfig
-import com.v2ray.ang.service.V2RayTestService
+import com.vpn1.app.AppConfig
+import com.vpn1.app.service.V2RayTestService
 import java.io.Serializable
 
 object MessageUtil {

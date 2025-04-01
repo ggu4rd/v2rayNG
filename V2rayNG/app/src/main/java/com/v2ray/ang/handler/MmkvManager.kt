@@ -1,15 +1,15 @@
-package com.v2ray.ang.handler
+package com.vpn1.app.handler
 
 import com.tencent.mmkv.MMKV
-import com.v2ray.ang.AppConfig.PREF_IS_BOOTED
-import com.v2ray.ang.AppConfig.PREF_ROUTING_RULESET
-import com.v2ray.ang.dto.AssetUrlItem
-import com.v2ray.ang.dto.ProfileItem
-import com.v2ray.ang.dto.RulesetItem
-import com.v2ray.ang.dto.ServerAffiliationInfo
-import com.v2ray.ang.dto.SubscriptionItem
-import com.v2ray.ang.util.JsonUtil
-import com.v2ray.ang.util.Utils
+import com.vpn1.app.AppConfig.PREF_IS_BOOTED
+import com.vpn1.app.AppConfig.PREF_ROUTING_RULESET
+import com.vpn1.app.dto.AssetUrlItem
+import com.vpn1.app.dto.ProfileItem
+import com.vpn1.app.dto.RulesetItem
+import com.vpn1.app.dto.ServerAffiliationInfo
+import com.vpn1.app.dto.SubscriptionItem
+import com.vpn1.app.util.JsonUtil
+import com.vpn1.app.util.Utils
 
 object MmkvManager {
 

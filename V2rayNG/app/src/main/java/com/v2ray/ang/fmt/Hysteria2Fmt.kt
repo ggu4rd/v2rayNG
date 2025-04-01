@@ -1,15 +1,15 @@
-package com.v2ray.ang.fmt
+package com.vpn1.app.fmt
 
-import com.v2ray.ang.AppConfig
-import com.v2ray.ang.AppConfig.LOOPBACK
-import com.v2ray.ang.dto.EConfigType
-import com.v2ray.ang.dto.Hysteria2Bean
-import com.v2ray.ang.dto.ProfileItem
-import com.v2ray.ang.dto.V2rayConfig.OutboundBean
-import com.v2ray.ang.extension.idnHost
-import com.v2ray.ang.extension.isNotNullEmpty
-import com.v2ray.ang.handler.MmkvManager
-import com.v2ray.ang.util.Utils
+import com.vpn1.app.AppConfig
+import com.vpn1.app.AppConfig.LOOPBACK
+import com.vpn1.app.dto.EConfigType
+import com.vpn1.app.dto.Hysteria2Bean
+import com.vpn1.app.dto.ProfileItem
+import com.vpn1.app.dto.V2rayConfig.OutboundBean
+import com.vpn1.app.extension.idnHost
+import com.vpn1.app.extension.isNotNullEmpty
+import com.vpn1.app.handler.MmkvManager
+import com.vpn1.app.util.Utils
 import java.net.URI
 
 object Hysteria2Fmt : FmtBase() {

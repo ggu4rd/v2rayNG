@@ -1,13 +1,13 @@
-package com.v2ray.ang.handler
+package com.vpn1.app.handler
 
 import android.content.Context
 import android.os.SystemClock
 import android.text.TextUtils
 import android.util.Log
-import com.v2ray.ang.AppConfig
-import com.v2ray.ang.R
-import com.v2ray.ang.extension.responseLength
-import com.v2ray.ang.util.HttpUtil
+import com.vpn1.app.AppConfig
+import com.vpn1.app.R
+import com.vpn1.app.extension.responseLength
+import com.vpn1.app.util.HttpUtil
 import kotlinx.coroutines.isActive
 import libv2ray.Libv2ray
 import java.io.IOException

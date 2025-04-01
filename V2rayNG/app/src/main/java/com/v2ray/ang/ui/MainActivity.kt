@@ -1,12 +1,12 @@
-package com.v2ray.ang.ui
+package com.vpn1.app.ui
 
 import android.net.VpnService
 import android.os.Bundle
 import android.widget.Button
 import androidx.activity.result.contract.ActivityResultContracts
 import androidx.appcompat.app.AppCompatActivity
-import com.v2ray.ang.R
-import com.v2ray.ang.service.V2RayServiceManager
+import com.vpn1.app.R
+import com.vpn1.app.service.V2RayServiceManager
 
 class MainActivity : AppCompatActivity() {
 

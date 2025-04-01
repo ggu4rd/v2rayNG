@@ -1,8 +1,8 @@
-package com.v2ray.ang.service
+package com.vpn1.app.service
 
 import android.content.Context
 import android.util.Log
-import com.v2ray.ang.AppConfig.ANG_PACKAGE
+import com.vpn1.app.AppConfig.ANG_PACKAGE
 import kotlinx.coroutines.CoroutineScope
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.launch

@@ -1,10 +1,10 @@
-package com.v2ray.ang.receiver
+package com.vpn1.app.receiver
 
 import android.content.BroadcastReceiver
 import android.content.Context
 import android.content.Intent
-import com.v2ray.ang.handler.MmkvManager
-import com.v2ray.ang.service.V2RayServiceManager
+import com.vpn1.app.handler.MmkvManager
+import com.vpn1.app.service.V2RayServiceManager
 
 class BootReceiver : BroadcastReceiver() {
     /**

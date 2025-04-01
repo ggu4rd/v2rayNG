@@ -1,8 +1,8 @@
-package com.v2ray.ang.dto
+package com.vpn1.app.dto
 
-import com.v2ray.ang.AppConfig.TAG_BLOCKED
-import com.v2ray.ang.AppConfig.TAG_DIRECT
-import com.v2ray.ang.AppConfig.TAG_PROXY
+import com.vpn1.app.AppConfig.TAG_BLOCKED
+import com.vpn1.app.AppConfig.TAG_DIRECT
+import com.vpn1.app.AppConfig.TAG_PROXY
 
 data class ServerConfig(
     val configVersion: Int = 3,

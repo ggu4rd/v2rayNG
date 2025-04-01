@@ -1,4 +1,4 @@
-package com.v2ray.ang.dto
+package com.vpn1.app.dto
 
 data class ProfileLiteItem(
     val configType: EConfigType,

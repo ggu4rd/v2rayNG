@@ -1,4 +1,4 @@
-package com.v2ray.ang.dto
+package com.vpn1.app.dto
 
 import android.text.TextUtils
 import com.google.gson.GsonBuilder
@@ -7,12 +7,12 @@ import com.google.gson.JsonSerializationContext
 import com.google.gson.JsonSerializer
 import com.google.gson.annotations.SerializedName
 import com.google.gson.reflect.TypeToken
-import com.v2ray.ang.AppConfig
-import com.v2ray.ang.dto.V2rayConfig.OutboundBean.OutSettingsBean.ServersBean
-import com.v2ray.ang.dto.V2rayConfig.OutboundBean.OutSettingsBean.VnextBean
-import com.v2ray.ang.dto.V2rayConfig.OutboundBean.OutSettingsBean.VnextBean.UsersBean
-import com.v2ray.ang.dto.V2rayConfig.OutboundBean.OutSettingsBean.WireGuardBean
-import com.v2ray.ang.util.Utils
+import com.vpn1.app.AppConfig
+import com.vpn1.app.dto.V2rayConfig.OutboundBean.OutSettingsBean.ServersBean
+import com.vpn1.app.dto.V2rayConfig.OutboundBean.OutSettingsBean.VnextBean
+import com.vpn1.app.dto.V2rayConfig.OutboundBean.OutSettingsBean.VnextBean.UsersBean
+import com.vpn1.app.dto.V2rayConfig.OutboundBean.OutSettingsBean.WireGuardBean
+import com.vpn1.app.util.Utils
 import java.lang.reflect.Type
 
 data class V2rayConfig(

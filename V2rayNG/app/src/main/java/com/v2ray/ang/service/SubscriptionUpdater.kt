@@ -1,4 +1,4 @@
-package com.v2ray.ang.service
+package com.vpn1.app.service
 
 import android.annotation.SuppressLint
 import android.app.NotificationChannel
@@ -10,11 +10,11 @@ import androidx.core.app.NotificationCompat
 import androidx.core.app.NotificationManagerCompat
 import androidx.work.CoroutineWorker
 import androidx.work.WorkerParameters
-import com.v2ray.ang.AppConfig
-import com.v2ray.ang.AppConfig.SUBSCRIPTION_UPDATE_CHANNEL
-import com.v2ray.ang.AppConfig.SUBSCRIPTION_UPDATE_CHANNEL_NAME
-import com.v2ray.ang.R
-import com.v2ray.ang.handler.MmkvManager
+import com.vpn1.app.AppConfig
+import com.vpn1.app.AppConfig.SUBSCRIPTION_UPDATE_CHANNEL
+import com.vpn1.app.AppConfig.SUBSCRIPTION_UPDATE_CHANNEL_NAME
+import com.vpn1.app.R
+import com.vpn1.app.handler.MmkvManager
 
 object SubscriptionUpdater {
 

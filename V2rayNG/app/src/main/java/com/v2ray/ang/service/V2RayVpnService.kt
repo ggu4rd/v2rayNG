@@ -1,4 +1,4 @@
-package com.v2ray.ang.service
+package com.vpn1.app.service
 
 import android.app.Service
 import android.content.Context
@@ -17,15 +17,15 @@ import android.os.ParcelFileDescriptor
 import android.os.StrictMode
 import android.util.Log
 import androidx.annotation.RequiresApi
-import com.v2ray.ang.AppConfig
-import com.v2ray.ang.AppConfig.ANG_PACKAGE
-import com.v2ray.ang.AppConfig.LOOPBACK
-import com.v2ray.ang.BuildConfig
-import com.v2ray.ang.R
-import com.v2ray.ang.handler.MmkvManager
-import com.v2ray.ang.handler.SettingsManager
-import com.v2ray.ang.util.MyContextWrapper
-import com.v2ray.ang.util.Utils
+import com.vpn1.app.AppConfig
+import com.vpn1.app.AppConfig.ANG_PACKAGE
+import com.vpn1.app.AppConfig.LOOPBACK
+import com.vpn1.app.BuildConfig
+import com.vpn1.app.R
+import com.vpn1.app.handler.MmkvManager
+import com.vpn1.app.handler.SettingsManager
+import com.vpn1.app.util.MyContextWrapper
+import com.vpn1.app.util.Utils
 import java.io.File
 import java.lang.ref.SoftReference
 import kotlinx.coroutines.CoroutineScope

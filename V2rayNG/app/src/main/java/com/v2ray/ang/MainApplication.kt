@@ -1,12 +1,12 @@
-package com.v2ray.ang
+package com.vpn1.app
 
 import android.content.Context
 import androidx.multidex.MultiDexApplication
 import androidx.work.Configuration
 import androidx.work.WorkManager
 import com.tencent.mmkv.MMKV
-import com.v2ray.ang.AppConfig.ANG_PACKAGE
-import com.v2ray.ang.handler.SettingsManager
+import com.vpn1.app.AppConfig.ANG_PACKAGE
+import com.vpn1.app.handler.SettingsManager
 
 class MainApplication : MultiDexApplication() {
     companion object {

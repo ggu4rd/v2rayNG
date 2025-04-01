@@ -1,11 +1,11 @@
-package com.v2ray.ang.dto
+package com.vpn1.app.dto
 
-import com.v2ray.ang.AppConfig.LOOPBACK
-import com.v2ray.ang.AppConfig.PORT_SOCKS
-import com.v2ray.ang.AppConfig.TAG_BLOCKED
-import com.v2ray.ang.AppConfig.TAG_DIRECT
-import com.v2ray.ang.AppConfig.TAG_PROXY
-import com.v2ray.ang.util.Utils
+import com.vpn1.app.AppConfig.LOOPBACK
+import com.vpn1.app.AppConfig.PORT_SOCKS
+import com.vpn1.app.AppConfig.TAG_BLOCKED
+import com.vpn1.app.AppConfig.TAG_DIRECT
+import com.vpn1.app.AppConfig.TAG_PROXY
+import com.vpn1.app.util.Utils
 
 data class ProfileItem(
     val configVersion: Int = 4,

@@ -13,7 +13,7 @@
  * See the License for the specific language governing permissions and
  * limitations under the License.
  */
-package com.v2ray.ang.helper
+package com.vpn1.app.helper
 
 /**
  * Interface to listen for a move or dismissal event from a [ItemTouchHelper.Callback].

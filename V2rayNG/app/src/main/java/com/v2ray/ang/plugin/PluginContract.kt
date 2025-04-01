@@ -17,7 +17,7 @@
  *                                                                            *
  ******************************************************************************/
 
-package com.v2ray.ang.plugin
+package com.vpn1.app.plugin
 
 object PluginContract {
 

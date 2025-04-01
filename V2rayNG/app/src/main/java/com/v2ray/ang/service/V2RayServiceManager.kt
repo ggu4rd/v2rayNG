@@ -1,4 +1,4 @@
-package com.v2ray.ang.service
+package com.vpn1.app.service
 
 import android.app.Service
 import android.content.BroadcastReceiver
@@ -8,16 +8,16 @@ import android.content.IntentFilter
 import android.os.Build
 import android.util.Log
 import androidx.core.content.ContextCompat
-import com.v2ray.ang.AppConfig
-import com.v2ray.ang.AppConfig.ANG_PACKAGE
-import com.v2ray.ang.R
-import com.v2ray.ang.dto.ProfileItem
-import com.v2ray.ang.extension.toast
-import com.v2ray.ang.handler.MmkvManager
-import com.v2ray.ang.handler.SettingsManager
-import com.v2ray.ang.util.MessageUtil
-import com.v2ray.ang.util.PluginUtil
-import com.v2ray.ang.util.Utils
+import com.vpn1.app.AppConfig
+import com.vpn1.app.AppConfig.ANG_PACKAGE
+import com.vpn1.app.R
+import com.vpn1.app.dto.ProfileItem
+import com.vpn1.app.extension.toast
+import com.vpn1.app.handler.MmkvManager
+import com.vpn1.app.handler.SettingsManager
+import com.vpn1.app.util.MessageUtil
+import com.vpn1.app.util.PluginUtil
+import com.vpn1.app.util.Utils
 import go.Seq
 import java.lang.ref.SoftReference
 import kotlinx.coroutines.CoroutineScope

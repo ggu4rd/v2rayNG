@@ -1,14 +1,14 @@
-package com.v2ray.ang.util
+package com.vpn1.app.util
 
 import android.content.Context
 import android.os.SystemClock
 import android.util.Log
-import com.v2ray.ang.AppConfig.ANG_PACKAGE
-import com.v2ray.ang.dto.EConfigType
-import com.v2ray.ang.dto.ProfileItem
-import com.v2ray.ang.fmt.Hysteria2Fmt
-import com.v2ray.ang.handler.SpeedtestManager
-import com.v2ray.ang.service.ProcessService
+import com.vpn1.app.AppConfig.ANG_PACKAGE
+import com.vpn1.app.dto.EConfigType
+import com.vpn1.app.dto.ProfileItem
+import com.vpn1.app.fmt.Hysteria2Fmt
+import com.vpn1.app.handler.SpeedtestManager
+import com.vpn1.app.service.ProcessService
 import java.io.File
 
 object PluginUtil {

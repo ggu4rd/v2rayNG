@@ -1,9 +1,9 @@
-package com.v2ray.ang.fmt
+package com.vpn1.app.fmt
 
-import com.v2ray.ang.dto.EConfigType
-import com.v2ray.ang.dto.ProfileItem
-import com.v2ray.ang.dto.V2rayConfig.OutboundBean
-import com.v2ray.ang.extension.isNotNullEmpty
+import com.vpn1.app.dto.EConfigType
+import com.vpn1.app.dto.ProfileItem
+import com.vpn1.app.dto.V2rayConfig.OutboundBean
+import com.vpn1.app.extension.isNotNullEmpty
 
 object HttpFmt : FmtBase() {
     /**

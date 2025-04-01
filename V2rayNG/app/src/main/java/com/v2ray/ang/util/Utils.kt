@@ -1,4 +1,4 @@
-package com.v2ray.ang.util
+package com.vpn1.app.util
 
 import android.content.ClipData
 import android.content.ClipboardManager
@@ -16,9 +16,9 @@ import android.util.Patterns
 import android.webkit.URLUtil
 import androidx.core.content.ContextCompat
 import androidx.core.net.toUri
-import com.v2ray.ang.AppConfig
-import com.v2ray.ang.AppConfig.ANG_PACKAGE
-import com.v2ray.ang.AppConfig.LOOPBACK
+import com.vpn1.app.AppConfig
+import com.vpn1.app.AppConfig.ANG_PACKAGE
+import com.vpn1.app.AppConfig.LOOPBACK
 import java.io.IOException
 import java.net.ServerSocket
 import java.net.URLDecoder
@@ -489,7 +489,7 @@ object Utils {
      *
      * @return True if the package is Xray, false otherwise.
      */
-    fun isXray(): Boolean = (ANG_PACKAGE.startsWith("com.v2ray.ang"))
+    fun isXray(): Boolean = (ANG_PACKAGE.startsWith("com.vpn1.app"))
 
 }
 

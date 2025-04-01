@@ -1,6 +1,6 @@
-package com.v2ray.ang.dto
+package com.vpn1.app.dto
 
-import com.v2ray.ang.AppConfig
+import com.vpn1.app.AppConfig
 
 
 enum class EConfigType(val value: Int, val protocolScheme: String) {

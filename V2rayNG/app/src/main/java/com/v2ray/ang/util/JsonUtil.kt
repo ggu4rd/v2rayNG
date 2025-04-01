@@ -1,4 +1,4 @@
-package com.v2ray.ang.util
+package com.vpn1.app.util
 
 import com.google.gson.Gson
 import com.google.gson.GsonBuilder

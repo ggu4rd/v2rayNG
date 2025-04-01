@@ -1,6 +1,6 @@
-package com.v2ray.ang
+package com.vpn1.app
 
-import com.v2ray.ang.util.Utils
+import com.vpn1.app.util.Utils
 import org.junit.Test
 
 import org.junit.Assert.*
