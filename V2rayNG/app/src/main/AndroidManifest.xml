@@ -44,7 +44,7 @@
     <uses-permission android:name="android.permission.RECEIVE_BOOT_COMPLETED" />
 
     <application
-        android:name="com.vpn1.app.MainApplication"
+        android:name=".MainApplication"
         android:allowBackup="true"
         android:banner="@mipmap/ic_banner"
         android:icon="@mipmap/ic_launcher"
@@ -74,7 +74,7 @@
                 android:resource="@xml/shortcuts" />
         </activity> -->
         <activity
-            android:name="com.vpn1.app.ui.MainActivity"
+            android:name=".ui.MainActivity"
             android:exported="true">
             <intent-filter>
                 <action android:name="android.intent.action.MAIN" />
@@ -83,7 +83,7 @@
         </activity>
 
         <service
-            android:name="com.vpn1.app.service.V2RayVpnService"
+            android:name=".service.V2RayVpnService"
             android:enabled="true"
             android:exported="false"
             android:foregroundServiceType="specialUse"
@@ -102,12 +102,12 @@
         </service>
 
         <service
-            android:name="com.vpn1.app.service.V2RayTestService"
+            android:name=".service.V2RayTestService"
             android:exported="false"
             android:process=":RunSoLibV2RayDaemon" />
 
         <receiver
-            android:name="com.vpn1.app.receiver.BootReceiver"
+            android:name=".receiver.BootReceiver"
             android:exported="true"
             android:label="BootReceiver">
             <intent-filter>

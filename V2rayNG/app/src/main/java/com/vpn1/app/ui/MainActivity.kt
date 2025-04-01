@@ -2,19 +2,26 @@ package com.vpn1.app.ui
 
 import android.net.VpnService
 import android.os.Bundle
-import android.widget.Button
+import android.widget.TextView
 import androidx.activity.result.contract.ActivityResultContracts
 import androidx.appcompat.app.AppCompatActivity
+import androidx.appcompat.widget.SwitchCompat
 import com.vpn1.app.R
 import com.vpn1.app.service.V2RayServiceManager
 
 class MainActivity : AppCompatActivity() {
     private var isVpnRunning = false
+    private lateinit var btnToggle: SwitchCompat
+    private lateinit var connectionStatus: TextView
 
     private val requestVpnPermission =
         registerForActivityResult(ActivityResultContracts.StartActivityForResult()) { result ->
             if (result.resultCode == RESULT_OK) {
                 startVpn()
+            } else {
+                // User denied permission, reset switch state
+                btnToggle.isChecked = false
+                updateConnectionUI()
             }
         }
 
@@ -22,15 +29,22 @@ class MainActivity : AppCompatActivity() {
         super.onCreate(savedInstanceState)
         setContentView(R.layout.main_activity)
 
-        findViewById<Button>(R.id.btnToggle).setOnClickListener {
-            if (!isVpnRunning) {
+        btnToggle = findViewById(R.id.btnToggle)
+        connectionStatus = findViewById(R.id.connectionStatus)
+
+        // Set initial UI state
+        btnToggle.isChecked = isVpnRunning
+        updateConnectionUI()
+
+        btnToggle.setOnCheckedChangeListener { _, isChecked ->
+            if (isChecked && !isVpnRunning) {
                 val intent = VpnService.prepare(this)
                 if (intent == null) {
                     startVpn()
                 } else {
                     requestVpnPermission.launch(intent)
                 }
-            } else {
+            } else if (!isChecked && isVpnRunning) {
                 stopVpn()
             }
         }
@@ -39,17 +53,20 @@ class MainActivity : AppCompatActivity() {
     private fun startVpn() {
         V2RayServiceManager.startVServiceFromToggle(this)
         isVpnRunning = true
-        updateButtonText()
+        btnToggle.isChecked = true
+        updateConnectionUI()
     }
 
     private fun stopVpn() {
         V2RayServiceManager.stopVService(this)
         isVpnRunning = false
-        updateButtonText()
+        btnToggle.isChecked = false
+        updateConnectionUI()
     }
 
-    private fun updateButtonText() {
-        findViewById<Button>(R.id.btnToggle).text = 
-            getString(if (isVpnRunning) R.string.disconnect_vpn else R.string.connect_vpn)
+    private fun updateConnectionUI() {
+        connectionStatus.text = getString(
+            if (isVpnRunning) R.string.connect else R.string.disconnect
+        )
     }
 }
