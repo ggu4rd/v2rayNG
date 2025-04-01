@@ -75,9 +75,9 @@ Utility classes, e.g.:
 
 Contains:
 
-- `AngApplication.kt`: App-level init (MMKV, etc)
+- `MainApplication.kt`: App-level init (MMKV, etc)
 - `ServiceControl.kt`: Tracks if service is running
 - `AppConfig.kt`: Constants, package names, etc
 
 **Keep:** `ServiceControl.kt` and `AppConfig.kt` if used in `service/`  
-**Trim:** `AngApplication.kt` if it initializes UI-related things or MMKV (not needed)
+**Trim:** `MainApplication.kt` if it initializes UI-related things or MMKV (not needed)

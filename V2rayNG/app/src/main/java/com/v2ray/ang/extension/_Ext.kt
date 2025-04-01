@@ -7,15 +7,15 @@ import android.content.IntentFilter
 import android.os.Build
 import android.os.Bundle
 import android.widget.Toast
-import com.v2ray.ang.AngApplication
+import com.v2ray.ang.MainApplication
 import me.drakeet.support.toast.ToastCompat
 import org.json.JSONObject
 import java.io.Serializable
 import java.net.URI
 import java.net.URLConnection
 
-val Context.v2RayApplication: AngApplication?
-    get() = applicationContext as? AngApplication
+val Context.v2RayApplication: MainApplication?
+    get() = applicationContext as? MainApplication
 
 /**
  * Shows a toast message with the given resource ID.

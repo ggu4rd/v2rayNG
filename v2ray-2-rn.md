@@ -36,7 +36,7 @@ Keep the Android services that control the Xray lifecycle:
 
 ### Essential Utilities
 
-- Keep `AngApplication` only if needed for core init.
+- Keep `MainApplication` only if needed for core init.
 - Keep minimal helper functions from `Utils.kt`.
 - Preserve AndroidX/AppCompat dependencies required by `VpnService`.
 
