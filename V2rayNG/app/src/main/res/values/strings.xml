@@ -3,7 +3,10 @@
     <string name="app_name" translatable="false">1VPN</string>
     <string name="connected">Connected</string>
     <string name="disconnected">Disconnected</string>
-
+    <string name="sign_up">Sign Up</string>
+    <string name="login">Login</string>
+    <string name="contact_us">Contact Us</string>
+    <string name="logout">Logout</string>
 
     <string name="app_widget_name">Switch</string>
     <string name="app_tile_name">Switch</string>
