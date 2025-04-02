@@ -10,5 +10,5 @@
     <color name="divider_color_light">#E0E0E0</color>
 
     <color name="colorPrimary">#F5F5F5</color>
-    <color name="colorAccent">#000000</color>
+    <color name="colorAccent">#333333</color>
 </resources>

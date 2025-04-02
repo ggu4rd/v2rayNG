@@ -8,6 +8,7 @@ import androidx.appcompat.app.AppCompatActivity
 import androidx.appcompat.widget.SwitchCompat
 import com.vpn1.app.R
 import com.vpn1.app.service.V2RayServiceManager
+import androidx.appcompat.widget.Toolbar
 
 class MainActivity : AppCompatActivity() {
     private var isVpnRunning = false
@@ -28,6 +29,11 @@ class MainActivity : AppCompatActivity() {
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         setContentView(R.layout.main_activity)
+
+        val toolbar = findViewById<Toolbar>(R.id.toolbar)
+        setSupportActionBar(toolbar)
+
+        supportActionBar?.setDisplayShowTitleEnabled(false)
 
         btnToggle = findViewById(R.id.btnToggle)
         connectionStatus = findViewById(R.id.connectionStatus)
