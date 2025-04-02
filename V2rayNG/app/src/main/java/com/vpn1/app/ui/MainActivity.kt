@@ -1,18 +1,19 @@
 package com.vpn1.app.ui
 
+import android.content.Intent
 import android.net.VpnService
 import android.os.Bundle
 import android.view.Menu
 import android.widget.TextView
 import androidx.activity.result.contract.ActivityResultContracts
+import androidx.appcompat.app.AlertDialog
 import androidx.appcompat.app.AppCompatActivity
 import androidx.appcompat.widget.SwitchCompat
+import androidx.appcompat.widget.Toolbar
+import androidx.core.net.toUri
 import com.vpn1.app.R
 import com.vpn1.app.service.V2RayServiceManager
-import androidx.appcompat.widget.Toolbar
-import android.content.Intent
-import androidx.core.net.toUri
-import androidx.appcompat.app.AlertDialog
+
 
 class MainActivity : AppCompatActivity() {
     private var isVpnRunning = false
@@ -57,6 +58,11 @@ class MainActivity : AppCompatActivity() {
             } else if (!isChecked && isVpnRunning) {
                 stopVpn()
             }
+        }
+
+        val serverButton = findViewById<androidx.constraintlayout.widget.ConstraintLayout>(R.id.btnServerLocation)
+        serverButton.setOnClickListener {
+            showServerSelectionModal()
         }
     }
 
@@ -118,5 +124,22 @@ class MainActivity : AppCompatActivity() {
         connectionStatus.text = getString(
             if (isVpnRunning) R.string.connected else R.string.disconnected
         )
+    }
+
+    private fun showServerSelectionModal() {
+        val builder = AlertDialog.Builder(this, R.style.RoundedDialog)
+
+        // Example server locations - replace with your actual server list
+        val locations = arrayOf("United States", "United Kingdom", "Germany", "Japan", "Singapore")
+
+        builder.setItems(locations) { _, which ->
+            // Handle server selection
+            val selectedLocation = locations[which]
+            // TODO: Implement server change logic
+        }
+
+        val dialog = builder.create()
+        dialog.window?.setBackgroundDrawableResource(R.drawable.rounded_dialog_bg)
+        dialog.show()
     }
 }
