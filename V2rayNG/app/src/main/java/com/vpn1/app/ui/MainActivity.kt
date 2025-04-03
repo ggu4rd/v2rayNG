@@ -130,7 +130,28 @@ class MainActivity : AppCompatActivity() {
         val builder = AlertDialog.Builder(this, R.style.RoundedDialog)
 
         // Example server locations - replace with your actual server list
-        val locations = arrayOf("United States", "United Kingdom", "Germany", "Japan", "Singapore")
+        val locations = arrayOf(
+            "Australia",
+            "Brazil",
+            "Canada",
+            "Chile",
+            "France",
+            "Germany",
+            "India",
+            "Japan",
+            "South Korea",
+            "Mexico",
+            "Netherlands",
+            "Poland",
+            "Singapore",
+            "South Africa",
+            "Spain",
+            "Sweden",
+            "United Kingdom",
+            "USA East",
+            "USA South",
+            "USA West"
+        )
 
         builder.setItems(locations) { _, which ->
             // Handle server selection
@@ -141,5 +162,12 @@ class MainActivity : AppCompatActivity() {
         val dialog = builder.create()
         dialog.window?.setBackgroundDrawableResource(R.drawable.rounded_dialog_bg)
         dialog.show()
+        dialog.setDialogHeight()
+
+    }
+
+    private fun AlertDialog.setDialogHeight(heightPercent: Int = 90) {
+        window?.attributes?.height = (resources.displayMetrics.heightPixels * heightPercent / 100)
+        window?.setLayout(window?.attributes?.width ?: 0, window?.attributes?.height ?: 0)
     }
 }
