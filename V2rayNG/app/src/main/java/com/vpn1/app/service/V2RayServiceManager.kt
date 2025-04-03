@@ -12,7 +12,6 @@ import com.vpn1.app.AppConfig
 import com.vpn1.app.AppConfig.ANG_PACKAGE
 import com.vpn1.app.R
 import com.vpn1.app.dto.ProfileItem
-import com.vpn1.app.extension.toast
 import com.vpn1.app.handler.MmkvManager
 import com.vpn1.app.handler.SettingsManager
 import com.vpn1.app.util.MessageUtil
@@ -80,7 +79,7 @@ object V2RayServiceManager {
      * @param context The context from which the service is stopped.
      */
     fun stopVService(context: Context) {
-        context.toast(R.string.toast_services_stop)
+//        context.toast(R.string.toast_services_stop)
         MessageUtil.sendMsg2Service(context, AppConfig.MSG_STATE_STOP, "")
     }
 
@@ -117,11 +116,12 @@ object V2RayServiceManager {
         //        if (!result.status) return
         Log.d("XrayDebug", "startContextService 2")
 
-        if (MmkvManager.decodeSettingsBool(AppConfig.PREF_PROXY_SHARING) == true) {
-            context.toast(R.string.toast_warning_pref_proxysharing_short)
-        } else {
-            context.toast(R.string.toast_services_start)
-        }
+//        if (MmkvManager.decodeSettingsBool(AppConfig.PREF_PROXY_SHARING) == true) {
+//            context.toast(R.string.toast_warning_pref_proxysharing_short)
+//        } else {
+//            context.toast(R.string.toast_services_start)
+//        }
+
         Log.d("XrayDebug", "startContextService 3")
 
         val intent = Intent(context.applicationContext, V2RayVpnService::class.java)
