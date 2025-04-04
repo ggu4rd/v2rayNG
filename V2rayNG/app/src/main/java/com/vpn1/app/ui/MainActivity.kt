@@ -97,7 +97,8 @@ class MainActivity : AppCompatActivity() {
     }
 
     private fun handleLogin() {
-        // Add login implementation here
+        val intent = Intent(this, LoginActivity::class.java)
+        startActivity(intent)
     }
 
     private fun handleContactUs() {

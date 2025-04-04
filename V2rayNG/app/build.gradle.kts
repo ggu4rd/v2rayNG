@@ -2,6 +2,7 @@ plugins {
     alias(libs.plugins.android.application)
     alias(libs.plugins.kotlin.android)
     id("com.jaredsburrows.license")
+    id("org.jetbrains.kotlin.plugin.compose") version "2.0.0" // Add Compose compiler plugin
 }
 
 android {
@@ -121,8 +122,13 @@ android {
     }
 
     buildFeatures {
+        compose =  true
         viewBinding = true
         buildConfig = true
+    }
+
+    composeOptions {
+        kotlinCompilerExtensionVersion = libs.versions.compose.compiler.get()
     }
 
     packaging {
@@ -136,6 +142,12 @@ android {
 dependencies {
     // Core Libraries
     implementation(fileTree(mapOf("dir" to "libs", "include" to listOf("*.aar", "*.jar"))))
+
+    implementation(libs.androidx.ui)
+    implementation(libs.androidx.material)
+    implementation(libs.androidx.activity.compose)
+    implementation(libs.androidx.ui.tooling.preview)
+    debugImplementation(libs.androidx.ui.tooling)
 
     // AndroidX Core Libraries
     implementation(libs.androidx.core.ktx)
