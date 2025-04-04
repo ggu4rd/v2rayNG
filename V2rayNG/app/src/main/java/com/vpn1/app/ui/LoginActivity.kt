@@ -76,7 +76,8 @@ fun LoginScreen() {
             value = username,
             onValueChange = { username = it },
             label = { Text(context.getString(R.string.username)) },
-            modifier = Modifier.fillMaxWidth(),
+            modifier = Modifier
+                .fillMaxWidth(),
             colors = TextFieldDefaults.outlinedTextFieldColors(
                 focusedBorderColor = Color(0xFF106CD5),
                 focusedLabelColor = Color(0xFF106CD5)
@@ -106,7 +107,9 @@ fun LoginScreen() {
                     handleLogin()
                 }
             ),
-            modifier = Modifier.fillMaxWidth(),
+            modifier = Modifier
+                .fillMaxWidth(),
+
             colors = TextFieldDefaults.outlinedTextFieldColors(
                 focusedBorderColor = Color(0xFF106CD5),
                 focusedLabelColor = Color(0xFF106CD5)
@@ -120,8 +123,8 @@ fun LoginScreen() {
             },
             modifier = Modifier
                 .fillMaxWidth()
-                .height(56.dp)
-                .padding(top = 8.dp), // Fixed: removed extra comma
+                .height(62.dp)
+                .padding(top = 8.dp),
             colors = ButtonDefaults.buttonColors(backgroundColor = Color(0xFF106CD5)),
             shape = androidx.compose.foundation.shape.RoundedCornerShape(6.dp),
             elevation = ButtonDefaults.elevation(0.dp, 0.dp, 0.dp, 0.dp, 0.dp)
