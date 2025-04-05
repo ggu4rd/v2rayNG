@@ -6,7 +6,7 @@ import androidx.activity.ComponentActivity
 import androidx.activity.compose.setContent
 import androidx.compose.foundation.layout.*
 import androidx.compose.foundation.text.KeyboardOptions
-import androidx.compose.material.*
+import androidx.compose.material3.*
 import androidx.compose.runtime.*
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
@@ -28,7 +28,10 @@ class LoginActivity : ComponentActivity() {
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         setContent {
-            MaterialTheme {
+            MaterialTheme(
+                colorScheme = lightColorScheme(), // or dynamicLightColorScheme(this) on Android 12+
+                typography = Typography()
+            ) {
                 LoginScreen()
             }
         }
@@ -37,14 +40,12 @@ class LoginActivity : ComponentActivity() {
 
 @Composable
 fun LoginScreen() {
-    // Keep existing variable declarations and handleLogin function
     var username by remember { mutableStateOf("") }
     var password by remember { mutableStateOf("") }
     val context = LocalContext.current
     val focusManager = LocalFocusManager.current
 
     fun handleLogin() {
-        // Existing implementation
         if (username.isEmpty() || password.isEmpty()) {
             Toast.makeText(
                 context,
@@ -76,9 +77,8 @@ fun LoginScreen() {
             value = username,
             onValueChange = { username = it },
             label = { Text(context.getString(R.string.username)) },
-            modifier = Modifier
-                .fillMaxWidth(),
-            colors = TextFieldDefaults.outlinedTextFieldColors(
+            modifier = Modifier.fillMaxWidth(),
+            colors = OutlinedTextFieldDefaults.colors(
                 focusedBorderColor = Color(0xFF106CD5),
                 focusedLabelColor = Color(0xFF106CD5)
             ),
@@ -97,6 +97,11 @@ fun LoginScreen() {
             onValueChange = { password = it },
             label = { Text(context.getString(R.string.password)) },
             visualTransformation = PasswordVisualTransformation(),
+            modifier = Modifier.fillMaxWidth(),
+            colors = OutlinedTextFieldDefaults.colors(
+                focusedBorderColor = Color(0xFF106CD5),
+                focusedLabelColor = Color(0xFF106CD5)
+            ),
             keyboardOptions = KeyboardOptions(
                 keyboardType = KeyboardType.Password,
                 imeAction = ImeAction.Done
@@ -107,27 +112,18 @@ fun LoginScreen() {
                     handleLogin()
                 }
             ),
-            modifier = Modifier
-                .fillMaxWidth(),
-
-            colors = TextFieldDefaults.outlinedTextFieldColors(
-                focusedBorderColor = Color(0xFF106CD5),
-                focusedLabelColor = Color(0xFF106CD5)
-            ),
             singleLine = true
         )
 
         Button(
-            onClick = {
-                handleLogin()
-            },
+            onClick = { handleLogin() },
             modifier = Modifier
                 .fillMaxWidth()
                 .height(62.dp)
                 .padding(top = 8.dp),
-            colors = ButtonDefaults.buttonColors(backgroundColor = Color(0xFF106CD5)),
+            colors = ButtonDefaults.buttonColors(containerColor = Color(0xFF106CD5)),
             shape = androidx.compose.foundation.shape.RoundedCornerShape(6.dp),
-            elevation = ButtonDefaults.elevation(0.dp, 0.dp, 0.dp, 0.dp, 0.dp)
+            elevation = ButtonDefaults.elevatedButtonElevation(defaultElevation = 0.dp)
         ) {
             Text(
                 text = "Login",

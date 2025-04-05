@@ -11,7 +11,7 @@ android {
 
     defaultConfig {
         applicationId = "com.vpn1.app"
-        minSdk = 21
+        minSdk = 24
         targetSdk = 35
         versionCode = 642
         versionName = "1.9.42"
@@ -126,11 +126,7 @@ android {
         viewBinding = true
         buildConfig = true
     }
-
-    composeOptions {
-        kotlinCompilerExtensionVersion = libs.versions.compose.compiler.get()
-    }
-
+    
     packaging {
         jniLibs {
             useLegacyPackaging = true
@@ -144,7 +140,7 @@ dependencies {
     implementation(fileTree(mapOf("dir" to "libs", "include" to listOf("*.aar", "*.jar"))))
 
     implementation(libs.androidx.ui)
-    implementation(libs.androidx.material)
+    implementation(libs.androidx.material3)
     implementation(libs.androidx.activity.compose)
     implementation(libs.androidx.ui.tooling.preview)
     debugImplementation(libs.androidx.ui.tooling)
