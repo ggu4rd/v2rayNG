@@ -10,6 +10,7 @@ import androidx.activity.result.ActivityResultLauncher
 import androidx.activity.result.contract.ActivityResultContracts
 import androidx.compose.animation.animateColorAsState
 import androidx.compose.animation.core.animateDpAsState
+import androidx.compose.foundation.Image
 import androidx.compose.foundation.background
 import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.height
@@ -17,7 +18,11 @@ import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.layout.size
 import androidx.compose.foundation.clickable
 import androidx.compose.foundation.interaction.MutableInteractionSource
+import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Box
+import androidx.compose.foundation.layout.PaddingValues
+import androidx.compose.foundation.layout.Row
+import androidx.compose.foundation.layout.Spacer
 import androidx.compose.foundation.layout.fillMaxSize
 import androidx.compose.foundation.layout.offset
 import androidx.compose.foundation.layout.width
@@ -46,9 +51,19 @@ import androidx.compose.ui.unit.dp
 import com.vpn1.app.R
 import com.vpn1.app.service.V2RayServiceManager
 import androidx.compose.foundation.layout.fillMaxWidth
+import androidx.compose.foundation.rememberScrollState
+import androidx.compose.foundation.verticalScroll
+import androidx.compose.material3.Button
+import androidx.compose.material3.ButtonDefaults
+import androidx.compose.material3.Card
+import androidx.compose.material3.CardDefaults
 import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.text.TextStyle
+import androidx.compose.ui.text.font.FontFamily
+import androidx.compose.ui.text.font.FontWeight
+import androidx.compose.ui.text.style.TextAlign
 import androidx.compose.ui.unit.sp
+import androidx.compose.ui.window.Dialog
 
 class MainActivity : ComponentActivity() {
 
@@ -88,6 +103,7 @@ private fun stopVpn(context: Context) {
 @Composable
 fun MainScreen(requestVpnPermission: (Intent) -> Unit) {
     val context = LocalContext.current
+    var showDialog by remember { mutableStateOf(false) }
 
     TopAppBar(
         title = {},
@@ -104,7 +120,13 @@ fun MainScreen(requestVpnPermission: (Intent) -> Unit) {
                 contentDescription = "Menu",
                 tint = Color.Unspecified,
                 modifier = Modifier
-                    .clickable { /* Handle menu click */ }
+                    .clickable(
+                        interactionSource = remember { MutableInteractionSource() },
+                        indication = null,
+                        onClick = {
+                            // Handle menu click
+                        }
+                    )
                     .size(24.dp)
             )
         },
@@ -119,6 +141,24 @@ fun MainScreen(requestVpnPermission: (Intent) -> Unit) {
         stopVpn = { stopVpn(context) },
         requestVpnPermission = requestVpnPermission,
     )
+
+    Box(modifier = Modifier.fillMaxSize()) {
+        // Main content goes here
+
+        LocationButton(
+            modifier = Modifier.align(Alignment.BottomCenter),
+            onClick = {
+                showDialog = true
+            }
+        )
+    }
+
+    if (showDialog) {
+        LocationAlertDialog(
+            onOptionSelected = { /* Handle selected option if needed */ },
+            onDismiss = { showDialog = false }
+        )
+    }
 }
 
 @Composable
@@ -184,7 +224,7 @@ fun ToggleSwitch(
         targetValue = if (checked) trackWidth - thumbSize else 0.dp
     )
     val interactionSource = remember { MutableInteractionSource() }
-    val thumbPadding = 10.dp  // Adjust this value for the desired gap
+    val thumbPadding = 10.dp
 
     Box(
         modifier = modifier
@@ -218,6 +258,126 @@ fun ToggleSwitch(
                     .clip(CircleShape)
                     .background(Color.White)
             )
+        }
+    }
+}
+
+@Composable
+fun LocationButton(modifier: Modifier = Modifier, onClick: () -> Unit = {}) {
+    Box(modifier = modifier.padding(horizontal = 24.dp, vertical = 24.dp)) {
+        Button(
+            onClick = onClick,
+            modifier = Modifier
+                .fillMaxWidth()
+                .height(62.dp),
+            colors = ButtonDefaults.buttonColors(containerColor = Color(0xFFe7eaed)),
+            shape = RoundedCornerShape(6.dp),
+            contentPadding = PaddingValues(horizontal = 24.dp, vertical = 0.dp)
+        ) {
+            Row(
+                modifier = Modifier.fillMaxWidth(),
+                verticalAlignment = Alignment.CenterVertically,
+                horizontalArrangement = Arrangement.SpaceBetween
+            ) {
+                Image(
+                    painter = painterResource(id = R.drawable.us),
+                    contentDescription = "US Icon",
+                    modifier = Modifier
+                        .size(24.dp)
+                        .clip(RoundedCornerShape(4.dp))
+                )
+                Text(
+                    text = "USA West",
+                    textAlign = TextAlign.Center,
+                    color = Color(0xFF333333),
+                    fontSize = 18.sp,
+                    fontFamily = FontFamily.SansSerif,
+                    fontWeight = FontWeight.Normal
+                )
+                Image(
+                    painter = painterResource(id = R.drawable.chevron_right),
+                    contentDescription = "Chevron Right",
+                    modifier = Modifier.size(20.dp)
+                )
+            }
+        }
+    }
+}
+
+@Composable
+fun LocationAlertDialog(
+    onOptionSelected: (String) -> Unit,
+    onDismiss: () -> Unit
+) {
+    val options = listOf(
+        "Australia", "Brazil", "Canada", "Chile", "France", "Germany",
+        "India", "Japan", "Mexico", "Netherlands", "Poland", "Singapore",
+        "South Africa", "South Korea", "Spain", "Sweden", "United Kingdom",
+        "USA East", "USA South", "USA West"
+    )
+    val scrollState = rememberScrollState()
+
+    Dialog(
+        onDismissRequest = onDismiss,
+        properties = androidx.compose.ui.window.DialogProperties(
+            dismissOnClickOutside = true,
+            usePlatformDefaultWidth = false
+        )
+    ) {
+        Box(
+            modifier = Modifier
+                .fillMaxSize()
+                .clickable(
+                    indication = null,
+                    interactionSource = remember { MutableInteractionSource() },
+                    onClick = onDismiss
+                ),
+            contentAlignment = Alignment.Center
+        ) {
+            Card(
+                shape = RoundedCornerShape(8.dp),
+                colors = CardDefaults.cardColors(containerColor = Color.White),
+                elevation = CardDefaults.cardElevation(8.dp),
+                modifier = Modifier
+                    .padding(32.dp)
+                    .clickable(
+                        indication = null,
+                        interactionSource = remember { MutableInteractionSource() }
+                    ) {}
+            ) {
+                Column(
+                    modifier = Modifier
+                        .verticalScroll(scrollState)
+                        .padding(vertical = 18.dp)
+                ) {
+                    options.forEach { option ->
+                        Row(
+                            modifier = Modifier
+                                .fillMaxWidth()
+                                .clickable {
+                                    onOptionSelected(option)
+                                    onDismiss()
+                                }
+                                .padding(horizontal = 24.dp, vertical = 18.dp),
+                            verticalAlignment = Alignment.CenterVertically
+                        ) {
+                            Image(
+                                painter = painterResource(id = R.drawable.us),
+                                contentDescription = "Icon",
+                                modifier = Modifier
+                                    .size(24.dp)
+                                    .clip(RoundedCornerShape(4.dp))
+                            )
+                            Spacer(modifier = Modifier.width(24.dp))
+                            Text(
+                                text = option,
+                                fontSize = 18.sp,
+                                color = Color(0xFF333333)
+                            )
+                        }
+                    }
+                }
+            }
         }
     }
 }
