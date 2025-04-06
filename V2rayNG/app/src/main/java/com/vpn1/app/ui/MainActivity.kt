@@ -104,6 +104,7 @@ private fun stopVpn(context: Context) {
 fun MainScreen(requestVpnPermission: (Intent) -> Unit) {
     val context = LocalContext.current
     var showDialog by remember { mutableStateOf(false) }
+    var showMenuDialog by remember { mutableStateOf(false) }
 
     TopAppBar(
         title = {},
@@ -123,9 +124,7 @@ fun MainScreen(requestVpnPermission: (Intent) -> Unit) {
                     .clickable(
                         interactionSource = remember { MutableInteractionSource() },
                         indication = null,
-                        onClick = {
-                            // Handle menu click
-                        }
+                        onClick = { showMenuDialog = true }
                     )
                     .size(24.dp)
             )
@@ -150,6 +149,16 @@ fun MainScreen(requestVpnPermission: (Intent) -> Unit) {
             onClick = {
                 showDialog = true
             }
+        )
+    }
+
+    if (showMenuDialog) {
+        MenuDialog(
+            onOptionSelected = { menuOption ->
+                // Handle selected menu option here
+                // e.g., navigate or update state based on menuOption.
+            },
+            onDismiss = { showMenuDialog = false }
         )
     }
 
@@ -375,6 +384,40 @@ fun LocationAlertDialog(
                                 color = Color(0xFF333333)
                             )
                         }
+                    }
+                }
+            }
+        }
+    }
+}
+
+@Composable
+fun MenuDialog(onOptionSelected: (String) -> Unit, onDismiss: () -> Unit) {
+    val options = listOf("Sign Up", "Login", "Contact Us")
+    Dialog(onDismissRequest = onDismiss) {
+        Card(
+            shape = RoundedCornerShape(8.dp),
+            colors = CardDefaults.cardColors(containerColor = Color.White),
+            elevation = CardDefaults.cardElevation(8.dp),
+            modifier = Modifier.padding(32.dp)
+        ) {
+            Column(modifier = Modifier.padding(vertical = 18.dp)) {
+                options.forEach { option ->
+                    Row(
+                        modifier = Modifier
+                            .fillMaxWidth()
+                            .clickable {
+                                onOptionSelected(option)
+                                onDismiss()
+                            }
+                            .padding(horizontal = 24.dp, vertical = 18.dp),
+                        verticalAlignment = Alignment.CenterVertically
+                    ) {
+                        Text(
+                            text = option,
+                            fontSize = 18.sp,
+                            color = Color(0xFF333333)
+                        )
                     }
                 }
             }
