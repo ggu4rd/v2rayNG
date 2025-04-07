@@ -21,19 +21,13 @@ import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.res.painterResource
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
-import com.vpn1.app.R
+import com.vpn1.app.util.getFlag
 
 @Composable
-fun LocationAlertDialog(
+fun LocationDialog(
     onOptionSelected: (String) -> Unit,
     onDismiss: () -> Unit
 ) {
-    val options = listOf(
-        "Australia", "Brazil", "Canada", "Chile", "France", "Germany",
-        "India", "Japan", "Mexico", "Netherlands", "Poland", "Singapore",
-        "South Africa", "South Korea", "Spain", "Sweden", "United Kingdom",
-        "USA East", "USA South", "USA West"
-    )
     val scrollState = rememberScrollState()
 
     BaseDialog(onDismiss = onDismiss) {
@@ -42,27 +36,28 @@ fun LocationAlertDialog(
                 .verticalScroll(scrollState)
                 .padding(vertical = 18.dp)
         ) {
-            options.forEach { option ->
+            freeLocations.forEach { location ->
                 Row(
                     modifier = Modifier
                         .fillMaxWidth()
                         .clickable {
-                            onOptionSelected(option)
+                            onOptionSelected(location.country)
                             onDismiss()
                         }
                         .padding(horizontal = 24.dp, vertical = 18.dp),
                     verticalAlignment = Alignment.CenterVertically
                 ) {
+                    val flagId = getFlag(location.countryCode)
                     Image(
-                        painter = painterResource(id = R.drawable.us),
-                        contentDescription = "Icon",
+                        painter = painterResource(id = flagId),
+                        contentDescription = "${location.country} Flag",
                         modifier = Modifier
                             .size(24.dp)
                             .clip(RoundedCornerShape(4.dp))
                     )
                     Spacer(modifier = Modifier.width(24.dp))
                     Text(
-                        text = option,
+                        text = location.country,
                         fontSize = 18.sp,
                         color = Color(0xFF333333)
                     )

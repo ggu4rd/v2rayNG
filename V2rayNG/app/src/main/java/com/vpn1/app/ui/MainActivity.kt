@@ -12,21 +12,13 @@ import androidx.compose.animation.animateColorAsState
 import androidx.compose.animation.core.animateDpAsState
 import androidx.compose.foundation.Image
 import androidx.compose.foundation.background
-import androidx.compose.foundation.layout.Column
-import androidx.compose.foundation.layout.height
-import androidx.compose.foundation.layout.padding
-import androidx.compose.foundation.layout.size
 import androidx.compose.foundation.clickable
 import androidx.compose.foundation.interaction.MutableInteractionSource
-import androidx.compose.foundation.layout.Arrangement
-import androidx.compose.foundation.layout.Box
-import androidx.compose.foundation.layout.PaddingValues
-import androidx.compose.foundation.layout.Row
-import androidx.compose.foundation.layout.fillMaxSize
-import androidx.compose.foundation.layout.offset
-import androidx.compose.foundation.layout.width
+import androidx.compose.foundation.layout.*
 import androidx.compose.foundation.shape.CircleShape
 import androidx.compose.foundation.shape.RoundedCornerShape
+import androidx.compose.material3.Button
+import androidx.compose.material3.ButtonDefaults
 import androidx.compose.material3.ExperimentalMaterial3Api
 import androidx.compose.material3.Icon
 import androidx.compose.material3.MaterialTheme
@@ -46,18 +38,17 @@ import androidx.compose.ui.draw.clip
 import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.platform.LocalContext
 import androidx.compose.ui.res.painterResource
-import androidx.compose.ui.unit.dp
-import com.vpn1.app.R
-import com.vpn1.app.service.V2RayServiceManager
-import androidx.compose.foundation.layout.fillMaxWidth
-import androidx.compose.material3.Button
-import androidx.compose.material3.ButtonDefaults
 import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.text.TextStyle
 import androidx.compose.ui.text.font.FontFamily
 import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.text.style.TextAlign
+import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
+import com.vpn1.app.R
+import com.vpn1.app.service.V2RayServiceManager
+import com.vpn1.app.model.Location
+import com.vpn1.app.util.getFlag
 
 class MainActivity : ComponentActivity() {
 
@@ -97,8 +88,9 @@ private fun stopVpn(context: Context) {
 @Composable
 fun MainScreen(requestVpnPermission: (Intent) -> Unit) {
     val context = LocalContext.current
-    var showDialog by remember { mutableStateOf(false) }
+    var showLocationDialog by remember { mutableStateOf(false) }
     var showMenuDialog by remember { mutableStateOf(false) }
+    var selectedLocation by remember { mutableStateOf(freeLocations.first()) }
 
     TopAppBar(
         title = {},
@@ -123,26 +115,21 @@ fun MainScreen(requestVpnPermission: (Intent) -> Unit) {
                     .size(24.dp)
             )
         },
-        colors = TopAppBarDefaults.topAppBarColors(
-            containerColor = Color.White
-        ),
+        colors = TopAppBarDefaults.topAppBarColors(containerColor = Color.White),
         modifier = Modifier.padding(horizontal = 24.dp, vertical = 4.dp)
     )
 
     VpnToggle(
         startVpn = { startVpn(context) },
         stopVpn = { stopVpn(context) },
-        requestVpnPermission = requestVpnPermission,
+        requestVpnPermission = requestVpnPermission
     )
 
     Box(modifier = Modifier.fillMaxSize()) {
-        // Main content goes here
-
         LocationButton(
             modifier = Modifier.align(Alignment.BottomCenter),
-            onClick = {
-                showDialog = true
-            }
+            selectedLocation = selectedLocation,
+            onClick = { showLocationDialog = true }
         )
     }
 
@@ -152,10 +139,12 @@ fun MainScreen(requestVpnPermission: (Intent) -> Unit) {
         )
     }
 
-    if (showDialog) {
-        LocationAlertDialog(
-            onOptionSelected = { /* Handle selected option if needed */ },
-            onDismiss = { showDialog = false }
+    if (showLocationDialog) {
+        LocationDialog(
+            onOptionSelected = { country ->
+                selectedLocation = freeLocations.first { it.country == country }
+            },
+            onDismiss = { showLocationDialog = false }
         )
     }
 }
@@ -217,7 +206,6 @@ fun ToggleSwitch(
         targetValue = if (checked) Color(0xFF106CD5) else Color(0xFFc4cbd3)
     )
     val thumbSize = 100.dp
-    val trackHeight = 100.dp
     val trackWidth = 200.dp
     val thumbOffset by animateDpAsState(
         targetValue = if (checked) trackWidth - thumbSize else 0.dp
@@ -228,7 +216,7 @@ fun ToggleSwitch(
     Box(
         modifier = modifier
             .width(trackWidth)
-            .height(trackHeight)
+            .height(100.dp)
             .clickable(
                 indication = null,
                 interactionSource = interactionSource,
@@ -236,14 +224,12 @@ fun ToggleSwitch(
             ),
         contentAlignment = Alignment.CenterStart
     ) {
-        // Track Layer
         Box(
             modifier = Modifier
                 .fillMaxSize()
                 .clip(RoundedCornerShape(50))
                 .background(color = trackColor)
         )
-        // Thumb using padding to simulate spacing
         Box(
             modifier = Modifier
                 .offset(x = thumbOffset)
@@ -262,7 +248,12 @@ fun ToggleSwitch(
 }
 
 @Composable
-fun LocationButton(modifier: Modifier = Modifier, onClick: () -> Unit = {}) {
+fun LocationButton(
+    modifier: Modifier = Modifier,
+    selectedLocation: Location,
+    onClick: () -> Unit = {}
+) {
+    val flagId = getFlag(selectedLocation.countryCode)
     Box(modifier = modifier.padding(horizontal = 24.dp, vertical = 24.dp)) {
         Button(
             onClick = onClick,
@@ -279,14 +270,14 @@ fun LocationButton(modifier: Modifier = Modifier, onClick: () -> Unit = {}) {
                 horizontalArrangement = Arrangement.SpaceBetween
             ) {
                 Image(
-                    painter = painterResource(id = R.drawable.us),
-                    contentDescription = "US Icon",
+                    painter = painterResource(id = flagId),
+                    contentDescription = "\${selectedLocation.country} Flag",
                     modifier = Modifier
                         .size(24.dp)
                         .clip(RoundedCornerShape(4.dp))
                 )
                 Text(
-                    text = "USA West",
+                    text = selectedLocation.country,
                     textAlign = TextAlign.Center,
                     color = Color(0xFF333333),
                     fontSize = 18.sp,
