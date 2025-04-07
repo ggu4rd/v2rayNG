@@ -22,7 +22,6 @@ import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Box
 import androidx.compose.foundation.layout.PaddingValues
 import androidx.compose.foundation.layout.Row
-import androidx.compose.foundation.layout.Spacer
 import androidx.compose.foundation.layout.fillMaxSize
 import androidx.compose.foundation.layout.offset
 import androidx.compose.foundation.layout.width
@@ -51,19 +50,14 @@ import androidx.compose.ui.unit.dp
 import com.vpn1.app.R
 import com.vpn1.app.service.V2RayServiceManager
 import androidx.compose.foundation.layout.fillMaxWidth
-import androidx.compose.foundation.rememberScrollState
-import androidx.compose.foundation.verticalScroll
 import androidx.compose.material3.Button
 import androidx.compose.material3.ButtonDefaults
-import androidx.compose.material3.Card
-import androidx.compose.material3.CardDefaults
 import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.text.TextStyle
 import androidx.compose.ui.text.font.FontFamily
 import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.text.style.TextAlign
 import androidx.compose.ui.unit.sp
-import androidx.compose.ui.window.Dialog
 
 class MainActivity : ComponentActivity() {
 
@@ -308,118 +302,6 @@ fun LocationButton(modifier: Modifier = Modifier, onClick: () -> Unit = {}) {
                     contentDescription = "Chevron Right",
                     modifier = Modifier.size(20.dp)
                 )
-            }
-        }
-    }
-}
-
-@Composable
-fun LocationAlertDialog(
-    onOptionSelected: (String) -> Unit,
-    onDismiss: () -> Unit
-) {
-    val options = listOf(
-        "Australia", "Brazil", "Canada", "Chile", "France", "Germany",
-        "India", "Japan", "Mexico", "Netherlands", "Poland", "Singapore",
-        "South Africa", "South Korea", "Spain", "Sweden", "United Kingdom",
-        "USA East", "USA South", "USA West"
-    )
-    val scrollState = rememberScrollState()
-
-    Dialog(
-        onDismissRequest = onDismiss,
-        properties = androidx.compose.ui.window.DialogProperties(
-            dismissOnClickOutside = true,
-            usePlatformDefaultWidth = false
-        )
-    ) {
-        Box(
-            modifier = Modifier
-                .fillMaxSize()
-                .clickable(
-                    indication = null,
-                    interactionSource = remember { MutableInteractionSource() },
-                    onClick = onDismiss
-                ),
-            contentAlignment = Alignment.Center
-        ) {
-            Card(
-                shape = RoundedCornerShape(8.dp),
-                colors = CardDefaults.cardColors(containerColor = Color.White),
-                elevation = CardDefaults.cardElevation(8.dp),
-                modifier = Modifier
-                    .padding(32.dp)
-                    .clickable(
-                        indication = null,
-                        interactionSource = remember { MutableInteractionSource() }
-                    ) {}
-            ) {
-                Column(
-                    modifier = Modifier
-                        .verticalScroll(scrollState)
-                        .padding(vertical = 18.dp)
-                ) {
-                    options.forEach { option ->
-                        Row(
-                            modifier = Modifier
-                                .fillMaxWidth()
-                                .clickable {
-                                    onOptionSelected(option)
-                                    onDismiss()
-                                }
-                                .padding(horizontal = 24.dp, vertical = 18.dp),
-                            verticalAlignment = Alignment.CenterVertically
-                        ) {
-                            Image(
-                                painter = painterResource(id = R.drawable.us),
-                                contentDescription = "Icon",
-                                modifier = Modifier
-                                    .size(24.dp)
-                                    .clip(RoundedCornerShape(4.dp))
-                            )
-                            Spacer(modifier = Modifier.width(24.dp))
-                            Text(
-                                text = option,
-                                fontSize = 18.sp,
-                                color = Color(0xFF333333)
-                            )
-                        }
-                    }
-                }
-            }
-        }
-    }
-}
-
-@Composable
-fun MenuDialog(onOptionSelected: (String) -> Unit, onDismiss: () -> Unit) {
-    val options = listOf("Sign Up", "Login", "Contact Us")
-    Dialog(onDismissRequest = onDismiss) {
-        Card(
-            shape = RoundedCornerShape(8.dp),
-            colors = CardDefaults.cardColors(containerColor = Color.White),
-            elevation = CardDefaults.cardElevation(8.dp),
-            modifier = Modifier.padding(32.dp)
-        ) {
-            Column(modifier = Modifier.padding(vertical = 18.dp)) {
-                options.forEach { option ->
-                    Row(
-                        modifier = Modifier
-                            .fillMaxWidth()
-                            .clickable {
-                                onOptionSelected(option)
-                                onDismiss()
-                            }
-                            .padding(horizontal = 24.dp, vertical = 18.dp),
-                        verticalAlignment = Alignment.CenterVertically
-                    ) {
-                        Text(
-                            text = option,
-                            fontSize = 18.sp,
-                            color = Color(0xFF333333)
-                        )
-                    }
-                }
             }
         }
     }
