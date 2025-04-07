@@ -28,6 +28,7 @@ import androidx.compose.material3.TopAppBarDefaults
 import androidx.compose.material3.Typography
 import androidx.compose.material3.lightColorScheme
 import androidx.compose.runtime.Composable
+import androidx.compose.runtime.LaunchedEffect
 import androidx.compose.runtime.mutableStateOf
 import androidx.compose.runtime.remember
 import androidx.compose.runtime.getValue
@@ -46,9 +47,12 @@ import androidx.compose.ui.text.style.TextAlign
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
 import com.vpn1.app.R
-import com.vpn1.app.service.V2RayServiceManager
 import com.vpn1.app.model.Location
+import com.vpn1.app.service.V2RayServiceManager
+import com.vpn1.app.util.PreferenceHelper
 import com.vpn1.app.util.getFlag
+
+const val KEY_SELECTED_LOCATION = "selected_location"
 
 class MainActivity : ComponentActivity() {
 
@@ -88,9 +92,22 @@ private fun stopVpn(context: Context) {
 @Composable
 fun MainScreen(requestVpnPermission: (Intent) -> Unit) {
     val context = LocalContext.current
+
+    // Load persisted location; fallback to first option if not set.
+    var selectedLocation by remember {
+        mutableStateOf(
+            PreferenceHelper.getObject<Location>(context, KEY_SELECTED_LOCATION)
+                ?: freeLocations.first()
+        )
+    }
+
+    // Save the updated location whenever it changes.
+    LaunchedEffect(selectedLocation) {
+        PreferenceHelper.saveObject(context, KEY_SELECTED_LOCATION, selectedLocation)
+    }
+
     var showLocationDialog by remember { mutableStateOf(false) }
     var showMenuDialog by remember { mutableStateOf(false) }
-    var selectedLocation by remember { mutableStateOf(freeLocations.first()) }
 
     TopAppBar(
         title = {},
