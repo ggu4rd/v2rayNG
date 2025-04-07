@@ -148,10 +148,6 @@ fun MainScreen(requestVpnPermission: (Intent) -> Unit) {
 
     if (showMenuDialog) {
         MenuDialog(
-            onOptionSelected = { menuOption ->
-                // Handle selected menu option here
-                // e.g., navigate or update state based on menuOption.
-            },
             onDismiss = { showMenuDialog = false }
         )
     }
