@@ -31,6 +31,11 @@ fun MenuDialog(
                         .fillMaxWidth()
                         .clickable {
                             when (option) {
+                                "Sign Up" -> {
+                                    val intent = Intent(context, SignUpActivity::class.java)
+                                    context.startActivity(intent)
+                                }
+
                                 "Login" -> {
                                     val intent = Intent(context, LoginActivity::class.java)
                                     context.startActivity(intent)
@@ -42,10 +47,6 @@ fun MenuDialog(
                                         "https://1vpn.org/contact_us".toUri()
                                     )
                                     context.startActivity(browserIntent)
-                                }
-
-                                "Sign Up" -> {
-                                    // Handle sign up action here
                                 }
                             }
                             onDismiss()

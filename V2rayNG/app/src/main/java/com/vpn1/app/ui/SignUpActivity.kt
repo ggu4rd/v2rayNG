@@ -14,33 +14,33 @@ import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.platform.LocalContext
 import androidx.compose.ui.platform.LocalFocusManager
 import androidx.compose.ui.res.stringResource
+import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.text.input.ImeAction
 import androidx.compose.ui.text.input.KeyboardType
 import androidx.compose.ui.text.input.PasswordVisualTransformation
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
-import androidx.compose.ui.focus.FocusDirection
-import androidx.compose.ui.text.font.FontWeight
 import com.vpn1.app.R
 
-class LoginActivity : ComponentActivity() {
+class SignUpActivity : ComponentActivity() {
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         setContent {
             MaterialTheme(
-                colorScheme = lightColorScheme(),  // or dynamicLightColorScheme(this) on Android 12+
+                colorScheme = lightColorScheme(),
                 typography = Typography()
             ) {
-                LoginScreen()
+                SignUpScreen()
             }
         }
     }
 }
 
 @Composable
-fun LoginScreen() {
+fun SignUpScreen() {
     var username by remember { mutableStateOf("") }
     var password by remember { mutableStateOf("") }
+    var email by remember { mutableStateOf("") }
     val context = LocalContext.current
     val focusManager = LocalFocusManager.current
 
@@ -52,7 +52,7 @@ fun LoginScreen() {
                 Toast.LENGTH_SHORT
             ).show()
         } else {
-            Toast.makeText(context, "Login Successful", Toast.LENGTH_SHORT).show()
+            Toast.makeText(context, "Sign Up Successful", Toast.LENGTH_SHORT).show()
             val intent = Intent(context, MainActivity::class.java)
             context.startActivity(intent)
             (context as? ComponentActivity)?.finish()
@@ -67,7 +67,7 @@ fun LoginScreen() {
         verticalArrangement = Arrangement.spacedBy(16.dp, Alignment.CenterVertically)
     ) {
         Text(
-            text = stringResource(R.string.login),
+            text = stringResource(R.string.sign_up),
             fontSize = 24.sp,
             color = Color(0xFF333333)
         )
@@ -77,7 +77,7 @@ fun LoginScreen() {
             onValueChange = { username = it },
             labelText = stringResource(R.string.username),
             imeAction = ImeAction.Next,
-            onImeAction = { focusManager.moveFocus(FocusDirection.Down) }
+            onImeAction = { focusManager.moveFocus(androidx.compose.ui.focus.FocusDirection.Down) }
         )
 
         ReusableOutlinedTextField(
@@ -93,6 +93,14 @@ fun LoginScreen() {
             }
         )
 
+        ReusableOutlinedTextField(
+            value = email,
+            onValueChange = { email = it },
+            labelText = stringResource(R.string.email),
+            imeAction = ImeAction.Next,
+            onImeAction = { focusManager.moveFocus(androidx.compose.ui.focus.FocusDirection.Down) }
+        )
+
         Button(
             onClick = { handleLogin() },
             modifier = Modifier
@@ -104,7 +112,7 @@ fun LoginScreen() {
             elevation = ButtonDefaults.elevatedButtonElevation(defaultElevation = 0.dp)
         ) {
             Text(
-                text = stringResource(R.string.login),
+                text = stringResource(R.string.sign_up),
                 fontSize = 16.sp,
                 fontWeight = FontWeight.Normal,
                 color = Color.White,

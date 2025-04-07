@@ -9,6 +9,7 @@
     <string name="logout">Logout</string>
     <string name="username">Username</string>
     <string name="password">Password</string>
+    <string name="email">Email (optional)</string>
     <string name="username_password_required">Username and password required</string>
 
 
