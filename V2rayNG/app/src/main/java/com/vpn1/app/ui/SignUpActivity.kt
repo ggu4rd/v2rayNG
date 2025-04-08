@@ -5,6 +5,7 @@ import android.os.Bundle
 import android.widget.Toast
 import androidx.activity.ComponentActivity
 import androidx.activity.compose.setContent
+import androidx.compose.foundation.clickable
 import androidx.compose.foundation.layout.*
 import androidx.compose.material3.*
 import androidx.compose.runtime.*
@@ -119,5 +120,13 @@ fun SignUpScreen() {
                 letterSpacing = 0.sp
             )
         }
+
+        Text(
+            text = "Have an account?",
+            color = Color(0xFF333333),
+            modifier = Modifier
+                .padding(bottom = 24.dp)
+                .clickable { context.startActivity(Intent(context, LoginActivity::class.java)) }
+        )
     }
 }
