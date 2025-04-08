@@ -62,7 +62,7 @@ fun SignUpScreen() {
     val context = LocalContext.current
     val focusManager = LocalFocusManager.current
 
-    fun handleLogin() {
+    fun handleSubmit() {
         if (username.isEmpty() || password.isEmpty()) {
             Toast.makeText(
                 context,
@@ -81,7 +81,7 @@ fun SignUpScreen() {
         modifier = Modifier
             .fillMaxSize()
             .padding(horizontal = 24.dp)
-            .imePadding() // Adjusts layout when keyboard opens
+            .imePadding()
             .verticalScroll(rememberScrollState()),
         horizontalAlignment = Alignment.CenterHorizontally,
         verticalArrangement = Arrangement.spacedBy(16.dp, Alignment.CenterVertically)
@@ -111,7 +111,7 @@ fun SignUpScreen() {
             visualTransformation = PasswordVisualTransformation(),
             onImeAction = {
                 focusManager.clearFocus()
-                handleLogin()
+                handleSubmit()
             }
         )
 
@@ -124,7 +124,7 @@ fun SignUpScreen() {
         )
 
         Button(
-            onClick = { handleLogin() },
+            onClick = { handleSubmit() },
             modifier = Modifier
                 .fillMaxWidth()
                 .height(62.dp)
@@ -146,7 +146,7 @@ fun SignUpScreen() {
             text = stringResource(R.string.have_an_account),
             color = Color(0xFF333333),
             modifier = Modifier
-                .padding(bottom = 24.dp)
+                .padding(top = 8.dp, bottom = 24.dp)
                 .clickable {
                     context.startActivity(Intent(context, LoginActivity::class.java))
                 }

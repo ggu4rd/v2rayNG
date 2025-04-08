@@ -5,7 +5,10 @@ import android.os.Bundle
 import android.widget.Toast
 import androidx.activity.ComponentActivity
 import androidx.activity.compose.setContent
+import androidx.compose.foundation.clickable
 import androidx.compose.foundation.layout.*
+import androidx.compose.foundation.rememberScrollState
+import androidx.compose.foundation.verticalScroll
 import androidx.compose.material3.*
 import androidx.compose.runtime.*
 import androidx.compose.ui.Alignment
@@ -21,6 +24,7 @@ import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
 import androidx.compose.ui.focus.FocusDirection
 import androidx.compose.ui.text.font.FontWeight
+import androidx.core.net.toUri
 import com.vpn1.app.R
 
 class LoginActivity : ComponentActivity() {
@@ -44,7 +48,7 @@ fun LoginScreen() {
     val context = LocalContext.current
     val focusManager = LocalFocusManager.current
 
-    fun handleLogin() {
+    fun handleSubmit() {
         if (username.isEmpty() || password.isEmpty()) {
             Toast.makeText(
                 context,
@@ -62,14 +66,18 @@ fun LoginScreen() {
     Column(
         modifier = Modifier
             .fillMaxSize()
-            .padding(24.dp),
+            .padding(horizontal = 24.dp)
+            .imePadding()
+            .verticalScroll(rememberScrollState()),
         horizontalAlignment = Alignment.CenterHorizontally,
         verticalArrangement = Arrangement.spacedBy(16.dp, Alignment.CenterVertically)
     ) {
         Text(
             text = stringResource(R.string.login),
             fontSize = 24.sp,
-            color = Color(0xFF333333)
+            color = Color(0xFF333333),
+            modifier = Modifier
+                .padding(top = 24.dp)
         )
 
         ReusableOutlinedTextField(
@@ -89,12 +97,12 @@ fun LoginScreen() {
             visualTransformation = PasswordVisualTransformation(),
             onImeAction = {
                 focusManager.clearFocus()
-                handleLogin()
+                handleSubmit()
             }
         )
 
         Button(
-            onClick = { handleLogin() },
+            onClick = { handleSubmit() },
             modifier = Modifier
                 .fillMaxWidth()
                 .height(62.dp)
@@ -109,6 +117,37 @@ fun LoginScreen() {
                 fontWeight = FontWeight.Normal,
                 color = Color.White,
                 letterSpacing = 0.sp
+            )
+        }
+
+        Row(
+            modifier = Modifier
+                .padding(top = 8.dp, bottom = 24.dp),
+            verticalAlignment = Alignment.CenterVertically
+        ) {
+            Text(
+                text = stringResource(R.string.create_account),
+                color = Color(0xFF333333),
+                modifier = Modifier.clickable {
+                    context.startActivity(Intent(context, SignUpActivity::class.java))
+                }
+            )
+            Text(
+                text = "|",
+                color = Color(0xFF333333),
+                modifier = Modifier
+                    .padding(horizontal = 8.dp),
+            )
+            Text(
+                text = stringResource(R.string.forgot_password),
+                color = Color(0xFF333333),
+                modifier = Modifier.clickable {
+                    val browserIntent = Intent(
+                        Intent.ACTION_VIEW,
+                        "https://1vpn.org/password_reset_request".toUri()
+                    )
+                    context.startActivity(browserIntent)
+                }
             )
         }
     }
