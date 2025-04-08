@@ -49,7 +49,9 @@ import androidx.compose.ui.unit.sp
 import com.vpn1.app.R
 import com.vpn1.app.model.Location
 import com.vpn1.app.service.V2RayServiceManager
+import com.vpn1.app.service.V2RayVpnService
 import com.vpn1.app.util.PreferenceHelper
+import com.vpn1.app.util.VpnServiceUtil
 import com.vpn1.app.util.getFlag
 
 const val KEY_SELECTED_LOCATION = "selected_location"
@@ -93,7 +95,6 @@ private fun stopVpn(context: Context) {
 fun MainScreen(requestVpnPermission: (Intent) -> Unit) {
     val context = LocalContext.current
 
-    // Load persisted location; fallback to first option if not set.
     var selectedLocation by remember {
         mutableStateOf(
             PreferenceHelper.getObject<Location>(context, KEY_SELECTED_LOCATION)
@@ -101,7 +102,6 @@ fun MainScreen(requestVpnPermission: (Intent) -> Unit) {
         )
     }
 
-    // Save the updated location whenever it changes.
     LaunchedEffect(selectedLocation) {
         PreferenceHelper.saveObject(context, KEY_SELECTED_LOCATION, selectedLocation)
     }
@@ -172,8 +172,11 @@ fun VpnToggle(
     stopVpn: () -> Unit,
     requestVpnPermission: (Intent) -> Unit
 ) {
-    var isVpnOn by remember { mutableStateOf(false) }
     val context = LocalContext.current
+    // Use the VpnServiceUtil to check if the VPN service is running.
+    var isVpnOn by remember {
+        mutableStateOf(VpnServiceUtil.isVpnServiceRunning(context, V2RayVpnService::class.java))
+    }
 
     Box(
         modifier = Modifier.fillMaxSize(),
