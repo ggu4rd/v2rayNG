@@ -124,25 +124,25 @@ fun MainScreen(
             Icon(
                 painter = painterResource(id = R.drawable.logo),
                 contentDescription = "Logo",
-                tint = Color.Unspecified
+                tint = Color.Unspecified,
+                modifier = Modifier.padding(horizontal = 24.dp, vertical = 4.dp)
             )
         },
         actions = {
-            Icon(
-                painter = painterResource(id = R.drawable.menu),
-                contentDescription = "Menu",
-                tint = Color.Unspecified,
+            Box(
                 modifier = Modifier
-                    .clickable(
-                        interactionSource = remember { MutableInteractionSource() },
-                        indication = null,
-                        onClick = { showMenuDialog = true }
-                    )
-                    .size(24.dp)
-            )
+                    .clickable { showMenuDialog = true }
+                    .padding(horizontal = 24.dp, vertical = 4.dp),
+            ) {
+                Icon(
+                    painter = painterResource(id = R.drawable.menu),
+                    contentDescription = "Menu",
+                    tint = Color.Unspecified,
+                    modifier = Modifier.size(24.dp)
+                )
+            }
         },
         colors = TopAppBarDefaults.topAppBarColors(containerColor = Color.White),
-        modifier = Modifier.padding(horizontal = 24.dp, vertical = 4.dp)
     )
 
     VpnToggle(
