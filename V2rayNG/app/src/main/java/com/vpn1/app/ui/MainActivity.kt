@@ -58,6 +58,7 @@ const val KEY_SELECTED_LOCATION = "selected_location"
 
 class MainActivity : ComponentActivity() {
 
+    private val isVpnOnState = mutableStateOf(false)
     private lateinit var vpnPermissionLauncher: ActivityResultLauncher<Intent>
 
     override fun onCreate(savedInstanceState: Bundle?) {
@@ -65,9 +66,14 @@ class MainActivity : ComponentActivity() {
         vpnPermissionLauncher =
             registerForActivityResult(ActivityResultContracts.StartActivityForResult()) { result ->
                 if (result.resultCode == RESULT_OK) {
+                    isVpnOnState.value = true
                     startVpn(this)
+                } else {
+                    isVpnOnState.value = false
                 }
             }
+
+        isVpnOnState.value = VpnServiceUtil.isVpnServiceRunning(this, V2RayVpnService::class.java)
 
         setContent {
             MaterialTheme(
@@ -75,7 +81,8 @@ class MainActivity : ComponentActivity() {
                 typography = Typography()
             ) {
                 MainScreen(
-                    requestVpnPermission = { intent -> vpnPermissionLauncher.launch(intent) }
+                    requestVpnPermission = { intent -> vpnPermissionLauncher.launch(intent) },
+                    isVpnOnState = isVpnOnState
                 )
             }
         }
@@ -92,9 +99,11 @@ private fun stopVpn(context: Context) {
 
 @OptIn(ExperimentalMaterial3Api::class)
 @Composable
-fun MainScreen(requestVpnPermission: (Intent) -> Unit) {
+fun MainScreen(
+    requestVpnPermission: (Intent) -> Unit,
+    isVpnOnState: androidx.compose.runtime.MutableState<Boolean>
+) {
     val context = LocalContext.current
-
     var selectedLocation by remember {
         mutableStateOf(
             PreferenceHelper.getObject<Location>(context, KEY_SELECTED_LOCATION)
@@ -139,7 +148,8 @@ fun MainScreen(requestVpnPermission: (Intent) -> Unit) {
     VpnToggle(
         startVpn = { startVpn(context) },
         stopVpn = { stopVpn(context) },
-        requestVpnPermission = requestVpnPermission
+        requestVpnPermission = requestVpnPermission,
+        isVpnOnState = isVpnOnState
     )
 
     Box(modifier = Modifier.fillMaxSize()) {
@@ -170,13 +180,10 @@ fun MainScreen(requestVpnPermission: (Intent) -> Unit) {
 fun VpnToggle(
     startVpn: () -> Unit,
     stopVpn: () -> Unit,
-    requestVpnPermission: (Intent) -> Unit
+    requestVpnPermission: (Intent) -> Unit,
+    isVpnOnState: androidx.compose.runtime.MutableState<Boolean>
 ) {
     val context = LocalContext.current
-    // Use the VpnServiceUtil to check if the VPN service is running.
-    var isVpnOn by remember {
-        mutableStateOf(VpnServiceUtil.isVpnServiceRunning(context, V2RayVpnService::class.java))
-    }
 
     Box(
         modifier = Modifier.fillMaxSize(),
@@ -189,23 +196,25 @@ fun VpnToggle(
             horizontalAlignment = Alignment.CenterHorizontally
         ) {
             ToggleSwitch(
-                checked = isVpnOn,
+                checked = isVpnOnState.value,
                 onCheckedChange = { isChecked ->
-                    isVpnOn = isChecked
                     if (isChecked) {
                         val intent = VpnService.prepare(context)
                         if (intent == null) {
+                            isVpnOnState.value = true
                             startVpn()
                         } else {
                             requestVpnPermission(intent)
+                            isVpnOnState.value = true
                         }
                     } else {
+                        isVpnOnState.value = false
                         stopVpn()
                     }
                 }
             )
             Text(
-                text = if (isVpnOn)
+                text = if (isVpnOnState.value)
                     stringResource(id = R.string.connected)
                 else
                     stringResource(id = R.string.disconnected),
