@@ -11,6 +11,7 @@
     <string name="password">Password</string>
     <string name="email">Email (optional)</string>
     <string name="username_password_required">Username and password required</string>
+    <string name="have_an_account">"Have an account?</string>
 
 
     <string name="app_widget_name">Switch</string>

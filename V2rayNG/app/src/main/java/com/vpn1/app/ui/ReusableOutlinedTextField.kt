@@ -18,7 +18,8 @@ fun ReusableOutlinedTextField(
     value: String,
     onValueChange: (String) -> Unit,
     labelText: String,
-    modifier: Modifier = Modifier.fillMaxWidth(),
+    modifier: Modifier = Modifier
+        .fillMaxWidth(),
     imeAction: ImeAction = ImeAction.Next,
     keyboardType: KeyboardType = KeyboardType.Text,
     visualTransformation: VisualTransformation = VisualTransformation.None,
@@ -45,6 +46,6 @@ fun ReusableOutlinedTextField(
         keyboardActions = KeyboardActions(
             onNext = { onImeAction() }
         ),
-        singleLine = true
+        singleLine = true,
     )
 }
