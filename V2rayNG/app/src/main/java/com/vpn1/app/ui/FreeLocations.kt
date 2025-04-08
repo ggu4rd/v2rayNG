@@ -11,8 +11,6 @@ val freeLocations = listOf(
             Host("netherlands-free-1.cloudcdnflare.site", 443),
             Host("netherlands-free-2.cloudspacecdn.site", 443)
         ),
-        latitude = 52.3878,
-        longitude = 4.9302
     ),
     Location(
         country = "USA West",
@@ -21,8 +19,6 @@ val freeLocations = listOf(
             Host("usa-west-free-1.cloudcdnflare.site", 443),
             Host("usa-west-free-2.cloudspacecdn.site", 443)
         ),
-        latitude = 34.0541,
-        longitude = -118.2441
     ),
     Location(
         country = "Australia",
