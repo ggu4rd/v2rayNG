@@ -77,7 +77,7 @@ fun LocationDialog(
                         Image(
                             painter = painterResource(id = R.drawable.star),
                             contentDescription = "Star Icon",
-                            modifier = Modifier.size(24.dp)
+                            modifier = Modifier.size(22.dp)
                         )
                     }
                 }
