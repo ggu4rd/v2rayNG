@@ -14,6 +14,7 @@ import androidx.compose.foundation.layout.imePadding
 import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.layout.height
 import androidx.compose.foundation.rememberScrollState
+import androidx.compose.foundation.text.KeyboardActions
 import androidx.compose.foundation.verticalScroll
 import androidx.compose.material3.Button
 import androidx.compose.material3.ButtonDefaults
@@ -22,9 +23,9 @@ import androidx.compose.material3.Typography
 import androidx.compose.material3.Text
 import androidx.compose.material3.lightColorScheme
 import androidx.compose.runtime.Composable
+import androidx.compose.runtime.getValue
 import androidx.compose.runtime.mutableStateOf
 import androidx.compose.runtime.remember
-import androidx.compose.runtime.getValue
 import androidx.compose.runtime.setValue
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
@@ -63,7 +64,7 @@ fun SignUpScreen() {
     val focusManager = LocalFocusManager.current
 
     fun handleSubmit() {
-        if (username.isEmpty() || password.isEmpty()) {
+        if (username.isEmpty() || password.isEmpty() || email.isEmpty()) {
             Toast.makeText(
                 context,
                 context.getString(R.string.username_password_required),
@@ -90,8 +91,7 @@ fun SignUpScreen() {
             text = stringResource(R.string.sign_up),
             fontSize = 24.sp,
             color = Color(0xFF333333),
-            modifier = Modifier
-                .padding(top = 24.dp)
+            modifier = Modifier.padding(top = 24.dp)
         )
 
         ReusableOutlinedTextField(
@@ -106,21 +106,24 @@ fun SignUpScreen() {
             value = password,
             onValueChange = { password = it },
             labelText = stringResource(R.string.password),
-            imeAction = ImeAction.Done,
+            imeAction = ImeAction.Next,
             keyboardType = KeyboardType.Password,
             visualTransformation = PasswordVisualTransformation(),
-            onImeAction = {
-                focusManager.clearFocus()
-                handleSubmit()
-            }
+            onImeAction = { focusManager.moveFocus(androidx.compose.ui.focus.FocusDirection.Down) }
         )
 
         ReusableOutlinedTextField(
             value = email,
             onValueChange = { email = it },
             labelText = stringResource(R.string.email),
-            imeAction = ImeAction.Next,
-            onImeAction = { focusManager.moveFocus(androidx.compose.ui.focus.FocusDirection.Down) }
+            imeAction = ImeAction.Done,
+            keyboardType = KeyboardType.Email,
+            keyboardActions = KeyboardActions(
+                onDone = {
+                    focusManager.clearFocus()
+                    handleSubmit()
+                }
+            )
         )
 
         Button(

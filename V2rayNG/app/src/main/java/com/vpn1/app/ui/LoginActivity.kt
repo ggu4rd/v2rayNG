@@ -16,11 +16,13 @@ import androidx.compose.foundation.layout.imePadding
 import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.verticalScroll
 import androidx.compose.foundation.rememberScrollState
+import androidx.compose.foundation.text.KeyboardActions
 import androidx.compose.material3.Button
 import androidx.compose.material3.ButtonDefaults
 import androidx.compose.material3.MaterialTheme
 import androidx.compose.material3.Text
 import androidx.compose.material3.Typography
+import androidx.compose.material3.lightColorScheme
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.mutableStateOf
 import androidx.compose.runtime.remember
@@ -46,16 +48,15 @@ import com.vpn1.app.R
 import com.vpn1.app.api.LoginRequest
 import com.vpn1.app.api.RetrofitClient
 import com.vpn1.app.model.LoginResponse
-import kotlinx.coroutines.launch
 import com.vpn1.app.util.PreferenceHelper
-
+import kotlinx.coroutines.launch
 
 class LoginActivity : ComponentActivity() {
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         setContent {
             MaterialTheme(
-                colorScheme = androidx.compose.material3.lightColorScheme(),
+                colorScheme = lightColorScheme(),
                 typography = Typography()
             ) {
                 LoginScreen()
@@ -81,8 +82,6 @@ fun LoginScreen() {
                 try {
                     val response = RetrofitClient.apiService.login(LoginRequest(username, password))
                     val rawJson = response.body()?.string()
-
-                    // Deserialize the JSON into a LoginResponse object and save it
                     val gson = Gson()
                     val loginResponse =
                         rawJson?.let { gson.fromJson(it, LoginResponse::class.java) }
@@ -136,10 +135,12 @@ fun LoginScreen() {
             imeAction = ImeAction.Done,
             keyboardType = KeyboardType.Password,
             visualTransformation = PasswordVisualTransformation(),
-            onImeAction = {
-                focusManager.clearFocus()
-                handleSubmit()
-            }
+            keyboardActions = KeyboardActions(
+                onDone = {
+                    focusManager.clearFocus()
+                    handleSubmit()
+                }
+            )
         )
 
         Button(
