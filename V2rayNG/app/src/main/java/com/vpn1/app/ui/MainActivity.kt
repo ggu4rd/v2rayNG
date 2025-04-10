@@ -48,6 +48,7 @@ import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
 import com.vpn1.app.R
 import com.vpn1.app.model.Location
+import com.vpn1.app.model.LoginResponse
 import com.vpn1.app.service.V2RayServiceManager
 import com.vpn1.app.service.V2RayVpnService
 import com.vpn1.app.util.PreferenceHelper
@@ -97,6 +98,15 @@ private fun stopVpn(context: Context) {
     V2RayServiceManager.stopVService(context)
 }
 
+fun getAvailableLocations(context: Context): List<Location> {
+    val loginResponse = PreferenceHelper.getObject<LoginResponse>(context, "LOGIN_OBJECT")
+    return if (loginResponse != null && loginResponse.isPremium && loginResponse.locations.isNotEmpty()) {
+        loginResponse.locations
+    } else {
+        freeLocations
+    }
+}
+
 @OptIn(ExperimentalMaterial3Api::class)
 @Composable
 fun MainScreen(
@@ -107,7 +117,7 @@ fun MainScreen(
     var selectedLocation by remember {
         mutableStateOf(
             PreferenceHelper.getObject<Location>(context, KEY_SELECTED_LOCATION)
-                ?: freeLocations.first()
+                ?: getAvailableLocations(context).first()
         )
     }
 
@@ -132,7 +142,7 @@ fun MainScreen(
             Box(
                 modifier = Modifier
                     .clickable { showMenuDialog = true }
-                    .padding(horizontal = 24.dp, vertical = 4.dp),
+                    .padding(horizontal = 24.dp, vertical = 4.dp)
             ) {
                 Icon(
                     painter = painterResource(id = R.drawable.menu),
@@ -142,7 +152,7 @@ fun MainScreen(
                 )
             }
         },
-        colors = TopAppBarDefaults.topAppBarColors(containerColor = Color.White),
+        colors = TopAppBarDefaults.topAppBarColors(containerColor = Color.White)
     )
 
     VpnToggle(
@@ -168,8 +178,9 @@ fun MainScreen(
 
     if (showLocationDialog) {
         LocationDialog(
+            locations = getAvailableLocations(context),
             onOptionSelected = { country ->
-                selectedLocation = freeLocations.first { it.country == country }
+                selectedLocation = getAvailableLocations(context).first { it.country == country }
             },
             onDismiss = { showLocationDialog = false }
         )

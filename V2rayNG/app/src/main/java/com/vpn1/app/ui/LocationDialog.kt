@@ -25,9 +25,11 @@ import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
 import com.vpn1.app.util.getFlag
 import com.vpn1.app.R
+import com.vpn1.app.model.Location
 
 @Composable
 fun LocationDialog(
+    locations: List<Location>,
     onOptionSelected: (String) -> Unit,
     onDismiss: () -> Unit
 ) {
@@ -40,13 +42,12 @@ fun LocationDialog(
                 .verticalScroll(scrollState)
                 .padding(vertical = 18.dp)
         ) {
-            freeLocations.forEach { location ->
+            locations.forEach { location ->
                 Row(
                     modifier = Modifier
                         .fillMaxWidth()
                         .clickable {
                             if (location.isPremium) {
-                                // Navigate to SignUpActivity for premium locations.
                                 val intent = Intent(context, SignUpActivity::class.java)
                                 context.startActivity(intent)
                             } else {
@@ -72,7 +73,6 @@ fun LocationDialog(
                         color = Color(0xFF333333)
                     )
                     Spacer(modifier = Modifier.weight(1f))
-
                     if (location.isPremium) {
                         Image(
                             painter = painterResource(id = R.drawable.star),
