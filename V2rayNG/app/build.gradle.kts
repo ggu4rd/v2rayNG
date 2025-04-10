@@ -83,8 +83,13 @@ android {
         val isFdroid = variant.productFlavors.any { it.name == "fdroid" }
         if (isFdroid) {
             val versionCodes =
-                mapOf("armeabi-v7a" to 2, "arm64-v8a" to 1, "x86" to 4, "x86_64" to 3, "universal" to 0
-            )
+                mapOf(
+                    "armeabi-v7a" to 2,
+                    "arm64-v8a" to 1,
+                    "x86" to 4,
+                    "x86_64" to 3,
+                    "universal" to 0
+                )
 
             variant.outputs
                 .map { it as com.android.build.gradle.internal.api.ApkVariantOutputImpl }
@@ -100,7 +105,13 @@ android {
                 }
         } else {
             val versionCodes =
-                mapOf("armeabi-v7a" to 4, "arm64-v8a" to 4, "x86" to 4, "x86_64" to 4, "universal" to 4)
+                mapOf(
+                    "armeabi-v7a" to 4,
+                    "arm64-v8a" to 4,
+                    "x86" to 4,
+                    "x86_64" to 4,
+                    "universal" to 4
+                )
 
             variant.outputs
                 .map { it as com.android.build.gradle.internal.api.ApkVariantOutputImpl }
@@ -122,11 +133,11 @@ android {
     }
 
     buildFeatures {
-        compose =  true
+        compose = true
         viewBinding = true
         buildConfig = true
     }
-    
+
     packaging {
         jniLibs {
             useLegacyPackaging = true
@@ -138,6 +149,10 @@ android {
 dependencies {
     // Core Libraries
     implementation(fileTree(mapOf("dir" to "libs", "include" to listOf("*.aar", "*.jar"))))
+
+    implementation(libs.retrofit)
+    implementation(libs.converter.gson)
+    implementation(libs.gson)
 
     implementation(libs.androidx.ui)
     implementation(libs.androidx.material3)
