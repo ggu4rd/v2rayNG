@@ -14,6 +14,7 @@ import androidx.compose.foundation.layout.imePadding
 import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.layout.height
 import androidx.compose.foundation.rememberScrollState
+import androidx.compose.foundation.shape.RoundedCornerShape
 import androidx.compose.foundation.text.KeyboardActions
 import androidx.compose.foundation.verticalScroll
 import androidx.compose.material3.Button
@@ -133,7 +134,7 @@ fun SignUpScreen() {
                 .height(62.dp)
                 .padding(top = 8.dp),
             colors = ButtonDefaults.buttonColors(containerColor = Color(0xFF106CD5)),
-            shape = androidx.compose.foundation.shape.RoundedCornerShape(6.dp),
+            shape = RoundedCornerShape(6.dp),
             elevation = ButtonDefaults.elevatedButtonElevation(defaultElevation = 0.dp)
         ) {
             Text(

@@ -16,12 +16,13 @@ import androidx.compose.foundation.layout.imePadding
 import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.verticalScroll
 import androidx.compose.foundation.rememberScrollState
+import androidx.compose.foundation.shape.RoundedCornerShape
 import androidx.compose.foundation.text.KeyboardActions
 import androidx.compose.material3.Button
 import androidx.compose.material3.ButtonDefaults
 import androidx.compose.material3.MaterialTheme
-import androidx.compose.material3.Text
 import androidx.compose.material3.Typography
+import androidx.compose.material3.Text
 import androidx.compose.material3.lightColorScheme
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.mutableStateOf
@@ -69,6 +70,8 @@ class LoginActivity : ComponentActivity() {
 fun LoginScreen() {
     var username by remember { mutableStateOf("") }
     var password by remember { mutableStateOf("") }
+    var token by remember { mutableStateOf("") }
+    var showTokenInput by remember { mutableStateOf(false) }
     val context = LocalContext.current
     val focusManager = LocalFocusManager.current
     val coroutineScope = rememberCoroutineScope()
@@ -80,21 +83,35 @@ fun LoginScreen() {
         } else {
             coroutineScope.launch {
                 try {
-                    val response = RetrofitClient.apiService.login(LoginRequest(username, password))
-                    val rawJson = response.body()?.string()
-                    val gson = Gson()
-                    val loginResponse =
-                        rawJson?.let { gson.fromJson(it, LoginResponse::class.java) }
-                    loginResponse?.let { PreferenceHelper.saveObject(context, "LOGIN_OBJECT", it) }
-
+                    val loginRequest = if (token.isNotEmpty()) {
+                        LoginRequest(username, password, token)
+                    } else {
+                        LoginRequest(username, password)
+                    }
+                    val response = RetrofitClient.apiService.login(loginRequest)
                     if (response.isSuccessful) {
+                        val rawJson = response.body()?.string()
+                        val gson = Gson()
+                        val loginResponse =
+                            rawJson?.let { gson.fromJson(it, LoginResponse::class.java) }
+                        loginResponse?.let {
+                            PreferenceHelper.saveObject(
+                                context,
+                                "LOGIN_OBJECT",
+                                it
+                            )
+                        }
                         Toast.makeText(context, "Login Successful", Toast.LENGTH_SHORT).show()
                         val intent = Intent(context, MainActivity::class.java)
                         context.startActivity(intent)
                         (context as? ComponentActivity)?.finish()
                     } else {
                         val errorString = response.errorBody()?.string() ?: "Unknown error"
-                        Toast.makeText(context, errorString, Toast.LENGTH_SHORT).show()
+                        if (errorString.contains("1001") && !showTokenInput) {
+                            showTokenInput = true
+                        } else {
+                            Toast.makeText(context, errorString, Toast.LENGTH_SHORT).show()
+                        }
                     }
                 } catch (e: Exception) {
                     e.printStackTrace()
@@ -143,6 +160,19 @@ fun LoginScreen() {
             )
         )
 
+        if (showTokenInput) {
+            ReusableOutlinedTextField(
+                value = token,
+                onValueChange = { token = it },
+                labelText = stringResource(R.string.twofa_token),
+                imeAction = ImeAction.Done,
+                onImeAction = {
+                    focusManager.clearFocus()
+                    handleSubmit()
+                }
+            )
+        }
+
         Button(
             onClick = { handleSubmit() },
             modifier = Modifier
@@ -150,7 +180,7 @@ fun LoginScreen() {
                 .height(62.dp)
                 .padding(top = 8.dp),
             colors = ButtonDefaults.buttonColors(containerColor = Color(0xFF106CD5)),
-            shape = androidx.compose.foundation.shape.RoundedCornerShape(6.dp),
+            shape = RoundedCornerShape(6.dp),
             elevation = ButtonDefaults.elevatedButtonElevation(defaultElevation = 0.dp)
         ) {
             Text(
