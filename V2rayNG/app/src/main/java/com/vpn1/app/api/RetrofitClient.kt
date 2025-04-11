@@ -7,11 +7,14 @@ object RetrofitClient {
 
     private const val BASE_URL = "https://1vpn.org/api/"
 
-    val apiService: LoginApiService by lazy {
+    val retrofit: Retrofit by lazy {
         Retrofit.Builder()
             .baseUrl(BASE_URL)
             .addConverterFactory(GsonConverterFactory.create())
             .build()
-            .create(LoginApiService::class.java)
+    }
+
+    val apiService: LoginApiService by lazy {
+        retrofit.create(LoginApiService::class.java)
     }
 }

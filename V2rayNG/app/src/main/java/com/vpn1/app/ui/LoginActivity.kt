@@ -48,6 +48,7 @@ import com.google.gson.Gson
 import com.vpn1.app.R
 import com.vpn1.app.api.LoginRequest
 import com.vpn1.app.api.RetrofitClient
+import com.vpn1.app.model.ErrorResponse
 import com.vpn1.app.model.LoginResponse
 import com.vpn1.app.util.PreferenceHelper
 import kotlinx.coroutines.launch
@@ -110,7 +111,15 @@ fun LoginScreen() {
                         if (errorString.contains("1001") && !showTokenInput) {
                             showTokenInput = true
                         } else {
-                            Toast.makeText(context, errorString, Toast.LENGTH_SHORT).show()
+                            try {
+                                val errorResponse =
+                                    Gson().fromJson(errorString, ErrorResponse::class.java)
+                                Toast.makeText(context, errorResponse.error, Toast.LENGTH_SHORT)
+                                    .show()
+                            } catch (e: Exception) {
+                                e.printStackTrace()
+                                Toast.makeText(context, errorString, Toast.LENGTH_SHORT).show()
+                            }
                         }
                     }
                 } catch (e: Exception) {

@@ -7,3 +7,8 @@ data class LoginResponse(
     val sessionAuthToken: String,
     val locations: List<Location>
 )
+
+data class ErrorResponse(
+    val error: String,
+    val code: Int? = null
+)
