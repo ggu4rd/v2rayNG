@@ -1,6 +1,6 @@
 package com.vpn1.app.model
 
-data class LoginResponse(
+data class UserDataResponse(
     val username: String,
     val email: String,
     val isPremium: Boolean,
@@ -12,3 +12,4 @@ data class ErrorResponse(
     val error: String,
     val code: Int? = null
 )
+

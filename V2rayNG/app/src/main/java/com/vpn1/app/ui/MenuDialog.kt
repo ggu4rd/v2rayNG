@@ -20,7 +20,7 @@ import androidx.compose.ui.unit.sp
 import androidx.core.content.edit
 import androidx.core.net.toUri
 import com.vpn1.app.R
-import com.vpn1.app.model.LoginResponse
+import com.vpn1.app.model.UserDataResponse
 import com.vpn1.app.util.PreferenceHelper
 
 @Composable
@@ -28,8 +28,9 @@ fun MenuDialog(
     onDismiss: () -> Unit
 ) {
     val context = LocalContext.current
-    val loginResponse: LoginResponse? = PreferenceHelper.getObject(context, "LOGIN_OBJECT")
-    val isLoggedIn = loginResponse?.sessionAuthToken?.isNotEmpty() == true
+    val userDataResponse: UserDataResponse? =
+        PreferenceHelper.getObject(context, "USER_DATA_OBJECT")
+    val isLoggedIn = userDataResponse?.sessionAuthToken?.isNotEmpty() == true
 
     val signUpText = stringResource(R.string.sign_up)
     val loginText = stringResource(R.string.login)
@@ -65,7 +66,7 @@ fun MenuDialog(
                                         PreferenceHelper.PREFS_NAME,
                                         Context.MODE_PRIVATE
                                     )
-                                    prefs.edit { remove("LOGIN_OBJECT") }
+                                    prefs.edit { remove("USER_DATA_OBJECT") }
                                     Toast.makeText(context, "Logged out", Toast.LENGTH_SHORT).show()
                                 }
 

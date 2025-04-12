@@ -49,7 +49,7 @@ import com.vpn1.app.R
 import com.vpn1.app.api.LoginRequest
 import com.vpn1.app.api.RetrofitClient
 import com.vpn1.app.model.ErrorResponse
-import com.vpn1.app.model.LoginResponse
+import com.vpn1.app.model.UserDataResponse
 import com.vpn1.app.util.PreferenceHelper
 import kotlinx.coroutines.launch
 
@@ -93,12 +93,12 @@ fun LoginScreen() {
                     if (response.isSuccessful) {
                         val rawJson = response.body()?.string()
                         val gson = Gson()
-                        val loginResponse =
-                            rawJson?.let { gson.fromJson(it, LoginResponse::class.java) }
-                        loginResponse?.let {
+                        val userDataResponse =
+                            rawJson?.let { gson.fromJson(it, UserDataResponse::class.java) }
+                        userDataResponse?.let {
                             PreferenceHelper.saveObject(
                                 context,
-                                "LOGIN_OBJECT",
+                                "USER_DATA_OBJECT",
                                 it
                             )
                         }

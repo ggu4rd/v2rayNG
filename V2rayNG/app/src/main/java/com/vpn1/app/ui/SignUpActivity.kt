@@ -41,6 +41,15 @@ import androidx.compose.ui.text.input.PasswordVisualTransformation
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
 import com.vpn1.app.R
+import androidx.compose.runtime.rememberCoroutineScope
+import com.vpn1.app.api.RetrofitClient
+import kotlinx.coroutines.launch
+import com.vpn1.app.api.SignUpRequest
+import com.vpn1.app.util.PreferenceHelper
+import com.google.gson.Gson
+import com.vpn1.app.model.ErrorResponse
+import com.vpn1.app.model.UserDataResponse
+
 
 class SignUpActivity : ComponentActivity() {
     override fun onCreate(savedInstanceState: Bundle?) {
@@ -61,21 +70,54 @@ fun SignUpScreen() {
     var username by remember { mutableStateOf("") }
     var password by remember { mutableStateOf("") }
     var email by remember { mutableStateOf("") }
+    val coroutineScope = rememberCoroutineScope()
     val context = LocalContext.current
     val focusManager = LocalFocusManager.current
 
     fun handleSubmit() {
-        if (username.isEmpty() || password.isEmpty() || email.isEmpty()) {
+        if (username.isEmpty() || password.isEmpty()) {
             Toast.makeText(
                 context,
                 context.getString(R.string.username_password_required),
                 Toast.LENGTH_SHORT
             ).show()
         } else {
-            Toast.makeText(context, "Sign Up Successful", Toast.LENGTH_SHORT).show()
-            val intent = Intent(context, MainActivity::class.java)
-            context.startActivity(intent)
-            (context as? ComponentActivity)?.finish()
+            coroutineScope.launch {
+                try {
+                    val signUpRequest = SignUpRequest(username, password, email)
+                    val response = RetrofitClient.apiService.signUp(signUpRequest)
+                    if (response.isSuccessful) {
+                        val rawJson = response.body()?.string()
+                        val gson = Gson()
+                        val userDataResponse =
+                            rawJson?.let { gson.fromJson(it, UserDataResponse::class.java) }
+                        userDataResponse?.let {
+                            PreferenceHelper.saveObject(
+                                context,
+                                "USER_DATA_OBJECT",
+                                it
+                            )
+                        }
+                        Toast.makeText(context, "Sign Up Successful", Toast.LENGTH_SHORT).show()
+                        val intent = Intent(context, MainActivity::class.java)
+                        context.startActivity(intent)
+                        (context as? ComponentActivity)?.finish()
+                    } else {
+                        val errorString = response.errorBody()?.string() ?: "Unknown error"
+                        try {
+                            val errorResponse =
+                                Gson().fromJson(errorString, ErrorResponse::class.java)
+                            Toast.makeText(context, errorResponse.error, Toast.LENGTH_SHORT).show()
+                        } catch (e: Exception) {
+                            e.printStackTrace()
+                            Toast.makeText(context, errorString, Toast.LENGTH_SHORT).show()
+                        }
+                    }
+                } catch (e: Exception) {
+                    e.printStackTrace()
+                    Toast.makeText(context, "Sign Up error", Toast.LENGTH_SHORT).show()
+                }
+            }
         }
     }
 

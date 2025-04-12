@@ -48,7 +48,7 @@ import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
 import com.vpn1.app.R
 import com.vpn1.app.model.Location
-import com.vpn1.app.model.LoginResponse
+import com.vpn1.app.model.UserDataResponse
 import com.vpn1.app.service.V2RayServiceManager
 import com.vpn1.app.service.V2RayVpnService
 import com.vpn1.app.util.PreferenceHelper
@@ -99,9 +99,9 @@ private fun stopVpn(context: Context) {
 }
 
 fun getAvailableLocations(context: Context): List<Location> {
-    val loginResponse = PreferenceHelper.getObject<LoginResponse>(context, "LOGIN_OBJECT")
-    return if (loginResponse != null && loginResponse.isPremium && loginResponse.locations.isNotEmpty()) {
-        loginResponse.locations
+    val userDataResponse = PreferenceHelper.getObject<UserDataResponse>(context, "USER_DATA_OBJECT")
+    return if (userDataResponse != null && userDataResponse.isPremium && userDataResponse.locations.isNotEmpty()) {
+        userDataResponse.locations
     } else {
         freeLocations
     }
