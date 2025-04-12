@@ -44,14 +44,14 @@ import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
 import androidx.compose.ui.focus.FocusDirection
 import androidx.core.net.toUri
-import com.google.gson.Gson
 import com.vpn1.app.R
 import com.vpn1.app.api.LoginRequest
 import com.vpn1.app.api.RetrofitClient
 import com.vpn1.app.model.ErrorResponse
-import com.vpn1.app.model.UserDataResponse
 import com.vpn1.app.util.PreferenceHelper
 import kotlinx.coroutines.launch
+import okhttp3.ResponseBody
+import retrofit2.Converter
 
 class LoginActivity : ComponentActivity() {
     override fun onCreate(savedInstanceState: Bundle?) {
@@ -91,35 +91,30 @@ fun LoginScreen() {
                     }
                     val response = RetrofitClient.apiService.login(loginRequest)
                     if (response.isSuccessful) {
-                        val rawJson = response.body()?.string()
-                        val gson = Gson()
-                        val userDataResponse =
-                            rawJson?.let { gson.fromJson(it, UserDataResponse::class.java) }
+                        val userDataResponse = response.body()
                         userDataResponse?.let {
-                            PreferenceHelper.saveObject(
-                                context,
-                                "USER_DATA_OBJECT",
-                                it
-                            )
+                            PreferenceHelper.saveObject(context, "USER_DATA_OBJECT", it)
                         }
                         Toast.makeText(context, "Login Successful", Toast.LENGTH_SHORT).show()
                         val intent = Intent(context, MainActivity::class.java)
                         context.startActivity(intent)
                         (context as? ComponentActivity)?.finish()
                     } else {
-                        val errorString = response.errorBody()?.string() ?: "Unknown error"
-                        if (errorString.contains("1001") && !showTokenInput) {
+                        val errorBody = response.errorBody()
+                        val converter: Converter<ResponseBody, ErrorResponse> =
+                            RetrofitClient.retrofit.responseBodyConverter(
+                                ErrorResponse::class.java,
+                                arrayOf()
+                            )
+                        val errorResponse: ErrorResponse? = errorBody?.let { error: ResponseBody ->
+                            converter.convert(error)
+                        }
+
+                        if (errorResponse != null && errorResponse.code == 1001 && !showTokenInput) {
                             showTokenInput = true
                         } else {
-                            try {
-                                val errorResponse =
-                                    Gson().fromJson(errorString, ErrorResponse::class.java)
-                                Toast.makeText(context, errorResponse.error, Toast.LENGTH_SHORT)
-                                    .show()
-                            } catch (e: Exception) {
-                                e.printStackTrace()
-                                Toast.makeText(context, errorString, Toast.LENGTH_SHORT).show()
-                            }
+                            val errorMsg = errorResponse?.error ?: "Unknown error"
+                            Toast.makeText(context, errorMsg, Toast.LENGTH_SHORT).show()
                         }
                     }
                 } catch (e: Exception) {

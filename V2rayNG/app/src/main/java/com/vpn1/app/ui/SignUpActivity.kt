@@ -2,6 +2,7 @@ package com.vpn1.app.ui
 
 import android.content.Intent
 import android.os.Bundle
+import android.util.Patterns
 import android.widget.Toast
 import androidx.activity.ComponentActivity
 import androidx.activity.compose.setContent
@@ -46,9 +47,9 @@ import com.vpn1.app.api.RetrofitClient
 import kotlinx.coroutines.launch
 import com.vpn1.app.api.SignUpRequest
 import com.vpn1.app.util.PreferenceHelper
-import com.google.gson.Gson
 import com.vpn1.app.model.ErrorResponse
-import com.vpn1.app.model.UserDataResponse
+import okhttp3.ResponseBody
+import retrofit2.Converter
 
 
 class SignUpActivity : ComponentActivity() {
@@ -81,42 +82,42 @@ fun SignUpScreen() {
                 context.getString(R.string.username_password_required),
                 Toast.LENGTH_SHORT
             ).show()
-        } else {
-            coroutineScope.launch {
-                try {
-                    val signUpRequest = SignUpRequest(username, password, email)
-                    val response = RetrofitClient.apiService.signUp(signUpRequest)
-                    if (response.isSuccessful) {
-                        val rawJson = response.body()?.string()
-                        val gson = Gson()
-                        val userDataResponse =
-                            rawJson?.let { gson.fromJson(it, UserDataResponse::class.java) }
-                        userDataResponse?.let {
-                            PreferenceHelper.saveObject(
-                                context,
-                                "USER_DATA_OBJECT",
-                                it
-                            )
-                        }
-                        Toast.makeText(context, "Sign Up Successful", Toast.LENGTH_SHORT).show()
-                        val intent = Intent(context, MainActivity::class.java)
-                        context.startActivity(intent)
-                        (context as? ComponentActivity)?.finish()
-                    } else {
-                        val errorString = response.errorBody()?.string() ?: "Unknown error"
-                        try {
-                            val errorResponse =
-                                Gson().fromJson(errorString, ErrorResponse::class.java)
-                            Toast.makeText(context, errorResponse.error, Toast.LENGTH_SHORT).show()
-                        } catch (e: Exception) {
-                            e.printStackTrace()
-                            Toast.makeText(context, errorString, Toast.LENGTH_SHORT).show()
-                        }
+            return
+        }
+
+        if (email.isEmpty() || !Patterns.EMAIL_ADDRESS.matcher(email).matches()) {
+            Toast.makeText(context, "Please enter a valid email", Toast.LENGTH_SHORT).show()
+            return
+        }
+
+        coroutineScope.launch {
+            try {
+                val signUpRequest = SignUpRequest(username, password, email)
+                val response = RetrofitClient.apiService.signUp(signUpRequest)
+                if (response.isSuccessful) {
+                    val userDataResponse = response.body()
+                    userDataResponse?.let {
+                        PreferenceHelper.saveObject(context, "USER_DATA_OBJECT", it)
                     }
-                } catch (e: Exception) {
-                    e.printStackTrace()
-                    Toast.makeText(context, "Sign Up error", Toast.LENGTH_SHORT).show()
+                    Toast.makeText(context, "Sign Up Successful", Toast.LENGTH_SHORT).show()
+                    val intent = Intent(context, MainActivity::class.java)
+                    context.startActivity(intent)
+                    (context as? ComponentActivity)?.finish()
+                } else {
+                    val errorBody = response.errorBody()
+                    val converter: Converter<ResponseBody, ErrorResponse> =
+                        RetrofitClient.retrofit.responseBodyConverter(
+                            ErrorResponse::class.java,
+                            arrayOf()
+                        )
+                    val errorResponse: ErrorResponse? = errorBody?.let { converter.convert(it) }
+
+                    val errorMsg = errorResponse?.error ?: "Unknown error"
+                    Toast.makeText(context, errorMsg, Toast.LENGTH_SHORT).show()
                 }
+            } catch (e: Exception) {
+                e.printStackTrace()
+                Toast.makeText(context, "Sign Up error", Toast.LENGTH_SHORT).show()
             }
         }
     }

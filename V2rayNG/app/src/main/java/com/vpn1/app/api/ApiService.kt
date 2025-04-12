@@ -1,6 +1,6 @@
 package com.vpn1.app.api
 
-import okhttp3.ResponseBody
+import com.vpn1.app.model.UserDataResponse
 import retrofit2.Response
 import retrofit2.http.Body
 import retrofit2.http.Headers
@@ -21,9 +21,9 @@ data class SignUpRequest(
 interface ApiService {
     @Headers("Content-Type: application/json", "Client-Type: app")
     @POST("login/")
-    suspend fun login(@Body request: LoginRequest): Response<ResponseBody>
+    suspend fun login(@Body request: LoginRequest): Response<UserDataResponse>
 
     @Headers("Content-Type: application/json", "Client-Type: app")
     @POST("signup/")
-    suspend fun signUp(@Body request: SignUpRequest): Response<ResponseBody>
+    suspend fun signUp(@Body request: SignUpRequest): Response<UserDataResponse>
 }
