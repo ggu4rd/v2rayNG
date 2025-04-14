@@ -7,9 +7,11 @@ import androidx.activity.ComponentActivity
 import androidx.activity.compose.setContent
 import androidx.activity.result.ActivityResultLauncher
 import androidx.activity.result.contract.ActivityResultContracts
+import androidx.compose.animation.*
 import androidx.compose.material3.MaterialTheme
 import androidx.compose.material3.Typography
 import androidx.compose.material3.lightColorScheme
+import androidx.compose.runtime.mutableStateOf
 import androidx.navigation.compose.NavHost
 import androidx.navigation.compose.composable
 import androidx.navigation.compose.rememberNavController
@@ -22,22 +24,25 @@ import com.vpn1.app.util.VpnServiceUtil
 
 const val KEY_SELECTED_LOCATION = "selected_location"
 
+@OptIn(ExperimentalAnimationApi::class)
 class MainActivity : ComponentActivity() {
 
-    private val isVpnOnState = androidx.compose.runtime.mutableStateOf(false)
+    private val isVpnOnState = mutableStateOf(false)
     private lateinit var vpnPermissionLauncher: ActivityResultLauncher<Intent>
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
-        vpnPermissionLauncher =
-            registerForActivityResult(ActivityResultContracts.StartActivityForResult()) { result ->
-                if (result.resultCode == RESULT_OK) {
-                    isVpnOnState.value = true
-                    V2RayServiceManager.startVServiceFromToggle(this)
-                } else {
-                    isVpnOnState.value = false
-                }
+
+        vpnPermissionLauncher = registerForActivityResult(
+            ActivityResultContracts.StartActivityForResult()
+        ) { result ->
+            if (result.resultCode == RESULT_OK) {
+                isVpnOnState.value = true
+                V2RayServiceManager.startVServiceFromToggle(this)
+            } else {
+                isVpnOnState.value = false
             }
+        }
 
         isVpnOnState.value = VpnServiceUtil.isVpnServiceRunning(this, V2RayVpnService::class.java)
 
@@ -47,7 +52,23 @@ class MainActivity : ComponentActivity() {
                 typography = Typography()
             ) {
                 val navController = rememberNavController()
-                NavHost(navController = navController, startDestination = "main") {
+
+                NavHost(
+                    navController = navController,
+                    startDestination = "main",
+                    enterTransition = {
+                        slideInHorizontally { it }
+                    },
+                    exitTransition = {
+                        slideOutHorizontally { -it }
+                    },
+                    popEnterTransition = {
+                        slideInHorizontally { -it }
+                    },
+                    popExitTransition = {
+                        slideOutHorizontally { it }
+                    }
+                ) {
                     composable("main") {
                         MainScreen(
                             requestVpnPermission = { intent -> vpnPermissionLauncher.launch(intent) },

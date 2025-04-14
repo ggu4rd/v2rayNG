@@ -49,8 +49,8 @@ fun LocationDialog(
                                 onPremiumSelected()
                             } else {
                                 onOptionSelected(location.country)
-                                onDismiss()
                             }
+                            onDismiss()
                         }
                         .padding(horizontal = 24.dp, vertical = 18.dp),
                     verticalAlignment = Alignment.CenterVertically
