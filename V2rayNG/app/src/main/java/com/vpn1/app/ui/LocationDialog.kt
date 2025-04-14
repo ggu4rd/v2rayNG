@@ -1,6 +1,5 @@
 package com.vpn1.app.ui
 
-import android.content.Intent
 import androidx.compose.foundation.Image
 import androidx.compose.foundation.clickable
 import androidx.compose.foundation.layout.Column
@@ -19,7 +18,6 @@ import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.draw.clip
 import androidx.compose.ui.graphics.Color
-import androidx.compose.ui.platform.LocalContext
 import androidx.compose.ui.res.painterResource
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
@@ -31,10 +29,10 @@ import com.vpn1.app.model.Location
 fun LocationDialog(
     locations: List<Location>,
     onOptionSelected: (String) -> Unit,
+    onPremiumSelected: () -> Unit,
     onDismiss: () -> Unit
 ) {
     val scrollState = rememberScrollState()
-    val context = LocalContext.current
 
     BaseDialog(onDismiss = onDismiss) {
         Column(
@@ -48,8 +46,7 @@ fun LocationDialog(
                         .fillMaxWidth()
                         .clickable {
                             if (location.isPremium) {
-                                val intent = Intent(context, SignUpActivity::class.java)
-                                context.startActivity(intent)
+                                onPremiumSelected()
                             } else {
                                 onOptionSelected(location.country)
                                 onDismiss()

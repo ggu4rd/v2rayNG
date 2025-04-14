@@ -19,12 +19,14 @@ import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
 import androidx.core.content.edit
 import androidx.core.net.toUri
+import androidx.navigation.NavController
 import com.vpn1.app.R
 import com.vpn1.app.model.UserDataResponse
 import com.vpn1.app.util.PreferenceHelper
 
 @Composable
 fun MenuDialog(
+    navController: NavController,
     onDismiss: () -> Unit
 ) {
     val context = LocalContext.current
@@ -52,13 +54,11 @@ fun MenuDialog(
                         .clickable {
                             when (option) {
                                 signUpText -> {
-                                    val intent = Intent(context, SignUpActivity::class.java)
-                                    context.startActivity(intent)
+                                    navController.navigate("signup")
                                 }
 
                                 loginText -> {
-                                    val intent = Intent(context, LoginActivity::class.java)
-                                    context.startActivity(intent)
+                                    navController.navigate("login")
                                 }
 
                                 logoutText -> {

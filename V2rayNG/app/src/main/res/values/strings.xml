@@ -15,6 +15,7 @@
     <string name="create_account">Create account</string>
     <string name="forgot_password">Forgot password?</string>
     <string name="twofa_token">2FA token</string>
+    <string name="enter_valid_email">Enter a valid email</string>
 
     <string name="app_widget_name">Switch</string>
     <string name="app_tile_name">Switch</string>
