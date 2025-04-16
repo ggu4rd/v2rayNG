@@ -9,13 +9,21 @@
     <string name="logout">Logout</string>
     <string name="username">Username</string>
     <string name="password">Password</string>
-    <string name="email">Email (optional)</string>
+    <string name="email_optional">Email (optional)</string>
     <string name="username_password_required">Username and password required</string>
     <string name="have_an_account">Have an account?</string>
     <string name="create_account">Create account</string>
     <string name="forgot_password">Forgot password?</string>
     <string name="twofa_token">2FA token</string>
     <string name="enter_valid_email">Enter a valid email</string>
+    <string name="account">Account</string>
+    <string name="email">Email</string>
+    <string name="plan">Plan</string>
+    <string name="no_email">No email</string>
+    <string name="premium">Premium</string>
+    <string name="free">Free</string>
+    <string name="edit_info">Edit Info</string>
+
 
     <string name="app_widget_name">Switch</string>
     <string name="app_tile_name">Switch</string>

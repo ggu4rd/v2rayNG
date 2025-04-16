@@ -112,21 +112,21 @@ fun LoginScreen(navController: NavController) {
         verticalArrangement = Arrangement.spacedBy(16.dp, Alignment.CenterVertically)
     ) {
         Text(
-            text = "Login",
+            text = stringResource(R.string.login),
             fontSize = 24.sp,
             modifier = Modifier.padding(top = 24.dp)
         )
         ReusableOutlinedTextField(
             value = username,
             onValueChange = { username = it },
-            labelText = "Username",
+            labelText = stringResource(R.string.username),
             imeAction = ImeAction.Next,
             onImeAction = { focusManager.moveFocus(androidx.compose.ui.focus.FocusDirection.Down) }
         )
         ReusableOutlinedTextField(
             value = password,
             onValueChange = { password = it },
-            labelText = "Password",
+            labelText = stringResource(R.string.password),
             imeAction = ImeAction.Done,
             keyboardType = KeyboardType.Password,
             visualTransformation = PasswordVisualTransformation(),

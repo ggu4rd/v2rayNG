@@ -103,7 +103,7 @@ fun SignUpScreen(navController: NavController) {
         verticalArrangement = Arrangement.spacedBy(16.dp, Alignment.CenterVertically)
     ) {
         Text(
-            text = "Sign Up",
+            text = stringResource(R.string.sign_up),
             fontSize = 24.sp,
             color = Color(0xFF333333),
             modifier = Modifier.padding(top = 24.dp)
@@ -111,14 +111,14 @@ fun SignUpScreen(navController: NavController) {
         ReusableOutlinedTextField(
             value = username,
             onValueChange = { username = it },
-            labelText = "Username",
+            labelText = stringResource(R.string.username),
             imeAction = androidx.compose.ui.text.input.ImeAction.Next,
             onImeAction = { focusManager.moveFocus(androidx.compose.ui.focus.FocusDirection.Down) }
         )
         ReusableOutlinedTextField(
             value = password,
             onValueChange = { password = it },
-            labelText = "Password",
+            labelText = stringResource(R.string.password),
             imeAction = androidx.compose.ui.text.input.ImeAction.Next,
             keyboardType = androidx.compose.ui.text.input.KeyboardType.Password,
             visualTransformation = androidx.compose.ui.text.input.PasswordVisualTransformation(),
@@ -127,7 +127,7 @@ fun SignUpScreen(navController: NavController) {
         ReusableOutlinedTextField(
             value = email,
             onValueChange = { email = it },
-            labelText = "Email",
+            labelText = stringResource(R.string.email_optional),
             imeAction = androidx.compose.ui.text.input.ImeAction.Done,
             keyboardType = androidx.compose.ui.text.input.KeyboardType.Email,
             onImeAction = {
