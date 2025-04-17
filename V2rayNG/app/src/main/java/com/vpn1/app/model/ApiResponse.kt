@@ -4,7 +4,7 @@ data class UserDataResponse(
     val username: String,
     val email: String,
     val isPremium: Boolean,
-    val sessionAuthToken: String,
+    var sessionAuthToken: String,
     val locations: List<Location>
 )
 
